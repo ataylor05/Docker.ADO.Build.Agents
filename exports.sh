@@ -8,8 +8,6 @@ echo "export AzCopyVersion=$(azcopy --version | cut -d " " -f 3)" >> ~/.profile
 
 echo "export AzureCliVersion=$(az version | jq '.["azure-cli"]')" >> ~/.profile
 
-echo "export CalicoctlVersion=$(calicoctl version | grep "Client" | cut -d "v" -f 2)" >> ~/.profile
-
 echo "export ClangVersion=$(clang --version | grep "clang version" | cut -d " " -f 3 | cut -d "-" -f 1)" >> ~/.profile
 
 echo "export CmakeVersion=$(cmake --version | grep "cmake version" | cut -d " " -f 3)" >> ~/.profile
@@ -44,9 +42,7 @@ echo "export GradleVersion=$(gradle -v 2> /dev/null | grep "Gradle" | cut -d " "
 
 echo "export Helm2Version=$(helm2 version 2> /dev/null | cut -d ":" -f 3 | cut -d '"' -f 2 | cut -d "v" -f 2)" >> ~/.profile
 
-echo "export Helm3Version=$(helm3 version 2> /dev/null | cut -d ":" -f 2 | cut -d '"' -f 2 | cut -d "v" -f 2)" >> ~/.profile
-
-echo "export IstioctlVersion=$(istioctl version | grep "client" | cut -d " " -f 3)" >> ~/.profile
+echo "export Helm3Version=$(helm version 2> /dev/null | cut -d ":" -f 2 | cut -d '"' -f 2 | cut -d "v" -f 2)" >> ~/.profile
 
 echo "export JavaVersion=$(java --version | grep "openjdk" | cut -d " " -f 2)" >> ~/.profile
 
