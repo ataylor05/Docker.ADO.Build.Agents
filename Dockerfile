@@ -1,11 +1,19 @@
 FROM ubuntu:18.04
 
-ARG agent_pool="" 
-
-ENV AZP_TOKEN=#{Prod-ADO-PAT}#
-ENV AZP_POOL=$agent_pool
+ENV AZP_TOKEN=#{ADO-PAT}#
+ENV AZP_POOL=aks-linux
 ENV AZP_WORK=_work
 ENV DEBIAN_FRONTEND=noninteractive
+ENV AdoAgentUrl=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-linux-x64-2.172.2.tar.gz
+ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+ENV GoUrl=https://golang.org/dl/go1.14.6.linux-amd64.tar.gz
+ENV Helm2Url=https://get.helm.sh/helm-v2.16.9-linux-arm64.tar.gz
+ENV Helm3Url=https://get.helm.sh/helm-v3.2.4-linux-arm64.tar.gz
+ENV NodeJsUrl=https://deb.nodesource.com/setup_13.x
+ENV PackerUrl=https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_linux_amd64.zip
+ENV SalesForceCliUrl=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+ENV TerraformUrl=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
+ENV VaultUrl=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_linux_amd64.zip
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
 RUN apt-get update \
@@ -26,11 +34,6 @@ RUN apt-get update \
         wget \
         zip
 
-#Install Humana certificates
-COPY certs/ca /usr/local/share/ca-certificates/ca
-COPY certs/root /usr/local/share/ca-certificates/root
-RUN update-ca-certificates
-
 # Ansible
 RUN apt-get install ansible -y
 
@@ -50,17 +53,12 @@ RUN cd /tmp \
   && ./deb_install.sh
 
 # Azure Devops Agent
-RUN cd /tmp && wget #{ADO-Agent-URL}# \
+RUN cd /tmp && wget $AdoAgentUrl \
   && mkdir /vsts \
   && tar -C /vsts -zxvf /tmp/vsts-agent-linux-x64-*.tar.gz
 
 # Build tools
 RUN apt-get install -y make cmake clang gcc g++
-
-# Calicoctl
-RUN cd /tmp && curl -O -L #{Calicoctl-URL}# \
-  && mv calicoctl /usr/bin \
-  && chmod 777 /usr/bin/calicoctl
 
 # Cloud Foundry CLI
 RUN wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add - \
@@ -75,7 +73,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
   && apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Dotnet Core
-RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb \
+RUN wget -q $DotNetCoreUrl -O /tmp/packages-microsoft-prod.deb \
   && dpkg -i /tmp/packages-microsoft-prod.deb \
   && add-apt-repository universe \
   && apt-get update -y \
@@ -93,7 +91,7 @@ RUN apt-get install -y gradle
 RUN apt-get install -y git
 
 # Go
-RUN cd /tmp && wget #{Go-URL}# \
+RUN cd /tmp && wget $GoUrl \
   && tar -C /opt -zxvf go*.linux-amd64.tar.gz \
   && ln -s /opt/go/bin/go /usr/bin/go
 
@@ -104,23 +102,17 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
   && apt-get install google-cloud-sdk -y
 
 # Helm 2
-RUN cd /tmp && wget #{Helm2-URL}# \
+RUN cd /tmp && wget $Helm2Url \
   && mkdir /opt/helm2 \
   && tar -C /opt/helm2 -zxvf helm-v2*-linux-amd64.tar.gz \
   && ln -s /opt/helm2/linux-amd64/helm /usr/bin/helm2 \
   && ln -s /opt/helm2/linux-amd64/tiller /usr/bin/tiller
 
 # Helm 3
-RUN cd /tmp && wget #{Helm3-URL}# \
+RUN cd /tmp && wget $Helm3Url \
   && mkdir /opt/helm3 \
   && tar -C /opt/helm3 -zxvf helm-v3*-linux-amd64.tar.gz \
-  && ln -s /opt/helm3/linux-amd64/helm /usr/bin/helm3
-
-# Istioctl
-RUN cd /tmp && wget #{Istio-URL}# \
-  && tar -zxvf istio-*-linux-amd64.tar.gz \
-  && mv istio-*/bin/istioctl /usr/bin \
-  && chmod 777 /usr/bin/istioctl
+  && ln -s /opt/helm3/linux-amd64/helm /usr/bin/helm
 
 # Jq
 RUN apt-get install -y jq
@@ -135,11 +127,11 @@ RUN apt-get install -y maven
 RUN apt-get install -y mysql-client-5.7
 
 # Node JS
-RUN curl -sL https://deb.nodesource.com/setup_13.x | bash - \
+RUN curl -sL $NodeJsUrl | bash - \
   && apt-get install -y nodejs
 
 # Packer
-RUN cd /tmp && wget #{Packer-URL}# \
+RUN cd /tmp && wget $PackerUrl \
   && unzip packer*linux_amd64.zip \
   && mv packer /usr/bin \
   && chmod 777 /usr/bin/packer
@@ -167,7 +159,7 @@ RUN apt-get install -y ruby
 RUN apt-get install -y rsync
 
 # Salesforce CLI
-RUN curl -sS https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz -o /tmp/sfdx-linux-amd64.tar.xz \
+RUN curl -sS $SalesForceCliUrl -o /tmp/sfdx-linux-amd64.tar.xz \
   && cd /tmp \
   && mkdir sfdx \
   && tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1 \
@@ -180,13 +172,13 @@ RUN apt-get install -y subversion
 RUN apt-get install -y swift
 
 # Terraform
-RUN cd /tmp && wget #{Terraform-URL}# \
+RUN cd /tmp && wget $TerraformUrl \
   && unzip terraform_*.zip \
   && mv terraform /usr/bin \
   && chmod 777 /usr/bin/terraform
 
 # Vault
-RUN cd /tmp && wget #{Vault-URL}# \
+RUN cd /tmp && wget $VaultUrl \
   && unzip vault_*.zip \
   && mv vault /usr/bin \
   && chmod 777 /usr/bin/vault
