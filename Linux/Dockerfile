@@ -25,6 +25,9 @@ RUN apt-get update \
   ftp \
   gnupg \
   iputils-ping \
+  libcurl4 \
+  libicu60 \
+  libunwind8 \
   lsb-release \
   netcat \
   software-properties-common \
