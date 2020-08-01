@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-ENV AZP_TOKEN=6csr3ucr57hqk6ao5i3vifyvvyawkcjpfvw7gvnc4btmx7bses4q
+ENV AZP_TOKEN=$(ado-pat)
 ENV AZP_POOL=aks-linux
 ENV AZP_WORK=_work
 ENV AZP_ADO_URL=https://dev.azure.com/allan05
