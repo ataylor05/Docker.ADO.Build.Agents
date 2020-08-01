@@ -1,8 +1,9 @@
 FROM ubuntu:18.04
 
-ENV AZP_TOKEN=#{ADO-PAT}#
+ENV AZP_TOKEN=6csr3ucr57hqk6ao5i3vifyvvyawkcjpfvw7gvnc4btmx7bses4q
 ENV AZP_POOL=aks-linux
 ENV AZP_WORK=_work
+ENV AZP_ADO_URL=https://dev.azure.com/allan05
 ENV DEBIAN_FRONTEND=noninteractive
 ENV AdoAgentUrl=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-linux-x64-2.172.2.tar.gz
 ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
@@ -18,21 +19,21 @@ RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
 RUN apt-get update \
 && apt-get install -y --no-install-recommends \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        ftp \
-        gnupg \
-        iputils-ping \
-        lsb-release \
-        netcat \
-        software-properties-common \
-        tar \
-        telnet \
-        unzip \
-        vim \
-        wget \
-        zip
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  ftp \
+  gnupg \
+  iputils-ping \
+  lsb-release \
+  netcat \
+  software-properties-common \
+  tar \
+  telnet \
+  unzip \
+  vim \
+  wget \
+  zip
 
 # Ansible
 RUN apt-get install ansible -y
@@ -103,15 +104,15 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
 
 # Helm 2
 RUN cd /tmp && wget $Helm2Url \
-  && mkdir /opt/helm2 \
-  && tar -C /opt/helm2 -zxvf helm-v2*-linux-amd64.tar.gz \
+  && mkdir /opt/helm2 \ 
+  && tar -C /opt/helm2 -zxvf helm-v2* \
   && ln -s /opt/helm2/linux-amd64/helm /usr/bin/helm2 \
   && ln -s /opt/helm2/linux-amd64/tiller /usr/bin/tiller
 
 # Helm 3
 RUN cd /tmp && wget $Helm3Url \
   && mkdir /opt/helm3 \
-  && tar -C /opt/helm3 -zxvf helm-v3*-linux-amd64.tar.gz \
+  && tar -C /opt/helm3 -zxvf helm-v3* \
   && ln -s /opt/helm3/linux-amd64/helm /usr/bin/helm
 
 # Jq
@@ -193,9 +194,8 @@ RUN rm -rf /tmp/*
 
 WORKDIR /vsts
 
-COPY ./start.sh .
-COPY ./exports.sh .
-RUN chmod +x start.sh exports.sh
-RUN ./exports.sh
+COPY start.sh /vsts
+COPY exports.sh /vsts
+RUN chmod +x /vsts/start.sh /vsts/exports.sh
 
-CMD . ~/.profile && ./start.sh
+CMD ./start.sh
