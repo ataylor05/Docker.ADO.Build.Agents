@@ -1,7 +1,7 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.10
 
 ENV AZP_URL=https://dev.azure.com/allan05
-ENV AZP_TOKEN=#{ado-pat}#
+ENV AZP_TOKEN_FILE=/azp/token
 ENV AZP_WORK=/vsts/_work
 ENV AZP_POOL=aks-linux
 ENV DEBIAN_FRONTEND=noninteractive
@@ -20,6 +20,8 @@ RUN apt-get update \
         netcat
 
 WORKDIR /azp
+
+RUN echo "#{ado-pat}#" > /azp/token
 
 COPY ./start.sh .
 RUN chmod +x start.sh
