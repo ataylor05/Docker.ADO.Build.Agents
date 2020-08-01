@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ado-linux-agent
+  labels:
+    app: ado-linux-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ado-linux-agent
+  template:
+    metadata:
+      labels:
+        app: ado-linux-agent
+    spec:
+      containers:
+      - name: ado-linux-agent
+        image: ataylorregistry.azurecr.io/ado-linux-agent:1.0
+        ports:
+        - containerPort: 443
