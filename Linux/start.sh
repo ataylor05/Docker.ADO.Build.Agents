@@ -20,7 +20,7 @@ cd /vsts/bin
 
 ./Agent.Listener configure --unattended \
   --agent "$(hostname)" \
-  --url "$AZP_ADO_URL" \
+  --url "https://dev.azure.com/$AZP_ADO_ORG" \
   --auth PAT \
   --token "$AZP_TOKEN" \
   --pool "$AZP_POOL" \
