@@ -1,4 +1,4 @@
-FROM ubuntu:20.10
+FROM ubuntu:18.04
 
 ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_TOKEN_FILE=/azp/token
