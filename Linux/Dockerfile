@@ -35,7 +35,10 @@ RUN apt-get update \
   wget \
   zip
 
-
+# Azure Devops Agent
+RUN cd /tmp && wget $AdoAgentUrl \
+  && mkdir /vsts \
+  && tar -C /vsts -zxvf /tmp/vsts-agent-linux-x64-*.tar.gz
 
 RUN rm -rf /tmp/*
 
