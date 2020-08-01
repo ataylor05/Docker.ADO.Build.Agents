@@ -3,8 +3,6 @@ echo "nameserver 8.8.8.8" > /etc/resolv.conf
 
 set -e
 
-source ./env.sh
-
 
 
 
