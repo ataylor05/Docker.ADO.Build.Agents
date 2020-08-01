@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 ENV AZP_TOKEN=$(ado-pat)
 ENV AZP_POOL=aks-linux
 ENV AZP_WORK=_work
-ENV AZP_ADO_URL=https://dev.azure.com/allan05
+ENV AZP_ADO_URL=dev.azure.com/allan05
 ENV DEBIAN_FRONTEND=noninteractive
 ENV AdoAgentUrl=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-linux-x64-2.172.2.tar.gz
 ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
