@@ -1,7 +1,9 @@
 FROM ubuntu:18.04
 
-# To make it easier for build and release pipelines to run apt-get,
-# configure apt to not require confirmation (assume the -y argument by default)
+ENV AZP_URL=https://dev.azure.com/allan05
+ENV AZP_TOKEN=#{ado-pat}#
+ENV AZP_WORK=/vsts/_work
+ENV AZP_POOL=aks-linux
 ENV DEBIAN_FRONTEND=noninteractive
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
