@@ -19,6 +19,6 @@ spec:
         image: ataylorregistry.azurecr.io/ado-linux-agent:1.0
         ports:
         - containerPort: 443
-      imagePullPolicy: Always
+        imagePullPolicy: Always
       nodeSelector:
           "beta.kubernetes.io/os": linux
