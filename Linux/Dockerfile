@@ -29,5 +29,5 @@ RUN echo "#{ado-pat}#" > /azp/token
 COPY ./start.sh .
 RUN chmod +x start.sh && chown -R azp:azp /azp
 
-USER azp
+#USER azp
 CMD ./start.sh
