@@ -48,12 +48,12 @@ fi
 curl -LsS $AZP_AGENTPACKAGE_URL | tar -xz & wait $!
 
 ./config.sh --unattended \
-  --agent "${AZP_AGENT_NAME:-$(hostname)}" \
+  --agent "$(hostname)" \
   --url "$AZP_URL" \
   --auth PAT \
   --token $(cat "$AZP_TOKEN_FILE") \
-  --pool "${AZP_POOL:-Default}" \
-  --work "${AZP_WORK:-_work}" \
+  --pool "$AZP_POOL" \
+  --work "$AZP_WORK" \
   --replace \
   --acceptTeeEula & wait $!
 
