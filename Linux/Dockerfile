@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_TOKEN_FILE=/azp/token
-ENV AZP_WORK=/vsts/_work
+ENV AZP_WORK=/azp/_work
 ENV AZP_POOL=aks-linux
 ENV DEBIAN_FRONTEND=noninteractive
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
