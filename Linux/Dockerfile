@@ -27,7 +27,6 @@ RUN groupadd -g 1000 azp \
 WORKDIR /azp
 
 RUN echo "#{ado-pat}#" > /azp/token
-RUN echo "azp ALL=(NOPASSWD::ALL) ALL" >> /etc/sudoers
 
 COPY ./start.sh .
 RUN chmod +x start.sh && chown -R azp:azp /azp
