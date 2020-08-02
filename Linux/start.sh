@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+./exports.sh
+
 if [ -z "$AZP_TOKEN_FILE" ]; then
   if [ -z "$AZP_TOKEN" ]; then
     echo 1>&2 "error: missing AZP_TOKEN environment variable"
