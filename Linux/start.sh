@@ -23,8 +23,12 @@ cd /azp/agent
 
 export AGENT_ALLOW_RUNASROOT="1"
 
+# Ignore environment variables
 export AZP_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
-export VSO_AGENT_IGNORE=_,VSO_AGENT_IGNORE,AZP_IGNORE
+#export KUBERNETES_IGNORE=AZP_TOKEN,AZP_TOKEN_FILE
+
+# Ignore env var groups
+export VSO_AGENT_IGNORE=_,VSO_AGENT_IGNORE,$AZP_IGNORE
 
 
 AZP_AGENT_RESPONSE=$(curl -LsS \
