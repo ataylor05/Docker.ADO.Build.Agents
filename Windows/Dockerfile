@@ -25,18 +25,18 @@ RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip
     Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
     Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
-RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip
+#RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip
 
 # Azure CLI
-RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
-    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
-    rm .\AzureCLI.msi
+#RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
+#    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
+#    rm .\AzureCLI.msi
 
 # Curl
-RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
-    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
-    Remove-Item -Path c:\azp\curl.zip -Force; `
-    $env:PATH = 'c:\curl\bin;' + $env:PATH;
+#RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
+#    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
+#    Remove-Item -Path c:\azp\curl.zip -Force; `
+#    $env:PATH = 'c:\curl\bin;' + $env:PATH;
 
 # Git
 #RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe; `
@@ -47,9 +47,9 @@ RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
 #RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
 # Python 3
-RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-    c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-    Remove-Item -Path c:\azp\python3.exe -Force
+#RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+#    c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+#    Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
 #RUN dism /online /Enable-Feature /FeatureName:TelnetClient
