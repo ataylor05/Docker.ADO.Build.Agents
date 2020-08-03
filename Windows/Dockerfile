@@ -8,7 +8,9 @@ ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
 
-RUN mkdir c:\\azp && mkdir c:\\bin
+RUN mkdir c:\\azp 
+RUN mkdir c:\\bin
+
 
 # Python 3
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe
