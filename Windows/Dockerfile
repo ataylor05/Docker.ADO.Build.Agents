@@ -37,7 +37,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # cmake
 RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
-    Start-Process -FilePath c:\azp\cmake.msi -Wait
+    Start-Process -FilePath c:\azp\cmake.msi -Wait; `
+    $env:PATH = 'C:\Program Files (x86)\GnuWin32\bin;' + $env:PATH;
 
 # Curl
 RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
@@ -61,11 +62,11 @@ RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
     #Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
-#RUN dism /online /Enable-Feature /FeatureName:TelnetClient
+RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
-#RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
-#    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin
+RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
+    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
