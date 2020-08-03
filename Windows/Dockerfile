@@ -6,6 +6,8 @@ ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
+ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
+ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
 
@@ -19,6 +21,9 @@ RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe
 RUN c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1
 RUN Remove-Item -Path c:\azp\python3.exe -Force
+
+# Telnet
+RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # ADO Agent
 RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip
