@@ -35,8 +35,8 @@ RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\Azur
 # Curl
 RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
     Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
-    #$env:PATH="$env:PATH\;c:\curl\bin"; `
-    Remove-Item -Path c:\azp\curl.zip -Force
+    Remove-Item -Path c:\azp\curl.zip -Force; `
+    $env:PATH = 'c:\curl\bin;' + $env:PATH;
 
 # Git
 RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe; `
