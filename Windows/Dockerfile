@@ -6,7 +6,6 @@ ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
-ENV AZCOPY_URL=
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
@@ -21,14 +20,16 @@ RUN mkdir c:\azp; `
     $env:PATH = 'c:\bin;' + $env:PATH; 
 
 # ADO Agent
-RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip; `
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip; `
     Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
     Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
 #RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip
 
 # Azure CLI
-RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
     rm .\AzureCLI.msi
 
@@ -39,9 +40,10 @@ RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\Azur
 #    $env:PATH = 'c:\curl\bin;' + $env:PATH;
 
 # Git
-#RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe; `
-#    c:\bin\git.exe /VERYSILENT /NORESTART; `
-#    Remove-Item -Path c:\bin\git.exe -Force
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
+    Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT /NORESTART" -Wait; `
+    Remove-Item -Path c:\azp\git.exe -Force
 
 # Jq
 #RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
