@@ -11,7 +11,8 @@ ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.win
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
 
-RUN mkdir c:\\azp && mkdir c:\\bin
+RUN mkdir c:\\azp 
+RUN mkdir c:\\bin
 RUN $env:PATH="$env:PATH;c:\\bin"
 
 # ADO Agent
