@@ -1,3 +1,5 @@
+$AGENT_NAME = hostname
+
 New-Item $env:AZP_WORK -ItemType directory | Out-Null
 Set-Location agent
 
@@ -11,6 +13,7 @@ $env:VSO_AGENT_IGNORE = "$env:VSO_AGENT_IGNORE,PROMPT,PSExecutionPolicyPreferenc
 
 cd C:\azp\agent
 .\config.cmd --unattended `
+    --agent "$AGENT_NAME" `
     --url "$env:AZP_URL" `
     --auth PAT `
     --token "$env:AZP_TOKEN" `
