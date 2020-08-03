@@ -42,8 +42,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
-    Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT /NORESTART" -Wait; `
-    Remove-Item -Path c:\azp\git.exe -Force
+    Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT /NORESTART" -Wait
 
 # Jq
 #RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
