@@ -28,9 +28,9 @@ RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip
 #RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip
 
 # Azure CLI
-#RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
-#    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
-#    rm .\AzureCLI.msi
+RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
+    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
+    rm .\AzureCLI.msi
 
 # Curl
 #RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
