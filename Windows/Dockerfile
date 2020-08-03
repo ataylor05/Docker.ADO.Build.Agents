@@ -11,14 +11,14 @@ ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.win
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
 
-RUN mkdir c:\\azp 
-RUN mkdir c:\\bin
-RUN $env:PATH="$env:PATH;c:\\bin"
+RUN mkdir c:\azp; `
+    mkdir c:\bin; `
+    $env:PATH="$env:PATH;c:\bin"
 
 # ADO Agent
-RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip
-RUN Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent
-RUN Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
+RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip; `
+    Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
+    Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
 # Azure CLI
 RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
@@ -26,23 +26,23 @@ RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\Azur
     rm .\AzureCLI.msi
 
 # Curl
-RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip
-RUN Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl
-RUN $env:PATH="$env:PATH;c:\curl\bin"
-RUN Remove-Item -Path c:\azp\curl.zip -Force
+RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
+    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
+    $env:PATH="$env:PATH;c:\curl\bin"; `
+    Remove-Item -Path c:\azp\curl.zip -Force
 
-# Get
-RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe
-RUN c:\bin\git.exe /VERYSILENT /NORESTART
-RUN Remove-Item -Path c:\bin\git.exe -Force
+# Git
+RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe; `
+    c:\bin\git.exe /VERYSILENT /NORESTART; `
+    Remove-Item -Path c:\bin\git.exe -Force
 
 # Jq
 RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
 # Python 3
-RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe
-RUN c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1
-RUN Remove-Item -Path c:\azp\python3.exe -Force
+RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+    c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+    Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
 RUN dism /online /Enable-Feature /FeatureName:TelnetClient
