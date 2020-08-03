@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ado-windows-agent
+  labels:
+    app: ado-windows-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ado-windows-agent
+  template:
+    metadata:
+      labels:
+        app: ado-windows-agent
+    spec:
+      containers:
+      - name: ado-windows-agent
+        image: ataylorregistry.azurecr.io/ado-windows-agent:1.0
+        ports:
+        - containerPort: 443
+        imagePullPolicy: Always
+      nodeSelector:
+          "beta.kubernetes.io/os": windows
