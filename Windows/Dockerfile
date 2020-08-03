@@ -14,6 +14,22 @@ ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
 RUN mkdir c:\\azp && mkdir c:\\bin
 RUN $env:PATH="$env:PATH;c:\\bin"
 
+# ADO Agent
+RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip
+RUN Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent
+RUN Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
+
+# Curl
+RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip
+RUN Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl
+RUN $env:PATH="$env:PATH;c:\curl\bin"
+RUN Remove-Item -Path c:\azp\curl.zip -Force
+
+# Get
+RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe
+RUN c:\bin\git.exe /VERYSILENT /NORESTART
+RUN Remove-Item -Path c:\bin\git.exe -Force
+
 # Jq
 RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
@@ -25,15 +41,9 @@ RUN Remove-Item -Path c:\azp\python3.exe -Force
 # Telnet
 RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
-# ADO Agent
-RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip
-
-RUN Expand-Archive -Path "c:\azp\vsts-agent-win.zip" -DestinationPath "c:\azp\agent"
-
+# Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
-
 ADD https://aka.ms/vs/16/release/vs_buildtools.exe C:\TEMP\vs_buildtools.exe
-
 RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
     --installPath C:\BuildTools `
     --add Microsoft.VisualStudio.Workload.AzureBuildTools `
