@@ -20,8 +20,6 @@ RUN mkdir c:\azp; `
     mkdir c:\bin; `
     $env:PATH = 'c:\bin;' + $env:PATH; 
 
-$env:PATH = 'C:\git\cmd;C:\git\mingw64\bin;C:\git\usr\bin;' + $env:PATH; 
-
 # ADO Agent
 RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip; `
     Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
