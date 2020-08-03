@@ -54,7 +54,8 @@ RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
 RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
-RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\python3.exe; `
+RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
+    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\binl
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
