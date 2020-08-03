@@ -25,7 +25,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
     Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
-#RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip
+# AzCopy
+RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -34,18 +35,19 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     rm .\AzureCLI.msi
 
 # Curl
-#RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
-#    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
-#    Remove-Item -Path c:\azp\curl.zip -Force; `
-#    $env:PATH = 'c:\curl\bin;' + $env:PATH;
+RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
+    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
+    Remove-Item -Path c:\azp\curl.zip -Force; `
+    $env:PATH = 'c:\curl\bin;' + $env:PATH;
 
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
-    Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT /NORESTART" -Wait
+    Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT" -Wait; `
+    Remove-Item -Path c:\azp\git.exe -Force
 
 # Jq
-#RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
+RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
 # Python 3
 #RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
