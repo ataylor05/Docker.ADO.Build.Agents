@@ -17,7 +17,7 @@ ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd
 
 
 RUN mkdir c:\azp; `
-    $env:PATH="$env:PATH`;c:\curl\bin"; `
+    $env:PATH="$env:PATH\;c:\curl\bin"; `
     mkdir c:\bin
 
 # ADO Agent
@@ -35,7 +35,7 @@ RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\Azur
 # Curl
 RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
     Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
-    $env:PATH="$env:PATH`;c:\curl\bin"; `
+    $env:PATH="$env:PATH\;c:\curl\bin"; `
     Remove-Item -Path c:\azp\curl.zip -Force
 
 # Git
