@@ -39,12 +39,12 @@ RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
     $env:PATH = 'c:\curl\bin;' + $env:PATH;
 
 # Git
-RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe; `
-    c:\bin\git.exe /VERYSILENT /NORESTART; `
-    Remove-Item -Path c:\bin\git.exe -Force
+#RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\bin\git.exe; `
+#    c:\bin\git.exe /VERYSILENT /NORESTART; `
+#    Remove-Item -Path c:\bin\git.exe -Force
 
 # Jq
-RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
+#RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
 # Python 3
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
@@ -52,11 +52,11 @@ RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
     Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
-RUN dism /online /Enable-Feature /FeatureName:TelnetClient
+#RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
-RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
-    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin
+#RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
+#    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
