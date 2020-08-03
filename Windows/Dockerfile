@@ -6,6 +6,7 @@ ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
+ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
@@ -34,6 +35,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
     rm .\AzureCLI.msi
 
+# cmake
+RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
+    Start-Process -FilePath c:\azp\cmake.msi -Wait
+
 # Curl
 RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
     Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
@@ -49,10 +54,11 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Jq
 RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
+
 # Python 3
-#RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-#    c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-#    Remove-Item -Path c:\azp\python3.exe -Force
+RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+    c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+    Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
 #RUN dism /online /Enable-Feature /FeatureName:TelnetClient
