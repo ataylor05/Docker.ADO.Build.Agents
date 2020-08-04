@@ -20,5 +20,12 @@ spec:
         ports:
         - containerPort: 443
         imagePullPolicy: Always
+        volumeMounts:
+          - name: dockersock
+            mountPath: "/var/run/docker.sock"
       nodeSelector:
           "beta.kubernetes.io/os": windows
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
