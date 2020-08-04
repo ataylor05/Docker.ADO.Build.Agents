@@ -80,4 +80,6 @@ WORKDIR c:\azp
 
 COPY start.ps1 c:\\azp\\start.ps1
 
+RUN setx /M PATH "C:\bin;%PATH%"
+
 ENTRYPOINT C:\\BuildTools\\Common7\\Tools\\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\\azp\\start.ps1
