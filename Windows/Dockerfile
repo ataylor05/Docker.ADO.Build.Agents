@@ -26,7 +26,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
 # AzCopy
-RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip; `
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip; `
     Expand-Archive -Path c:\azp\azcopyv10.zip -DestinationPath c:\TEMP; `
     cd C:\TEMP\azcopy*; `
     cp azcopy.exe c:\bin
@@ -38,11 +39,13 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     rm .\AzureCLI.msi
 
 # Cmake
-RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
     Start-Process -FilePath c:\azp\cmake.msi -Wait
 
 # Curl
-RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
     Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\TEMP; `
     Remove-Item -Path c:\azp\curl.zip -Force; `
     cd C:\TEMP\curl*; `
@@ -59,20 +62,34 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Remove-Item -Path c:\azp\git.exe -Force
 
 # Jq
-RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
+
+# Packer
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile c:\azp\packer.zip; `
+    Expand-Archive -Path c:\azp\packer.zip -DestinationPath c:\bin; `
+    Remove-Item -Path c:\azp\packer.zip -Force
 
 # Python 3
-RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-    Start-Process -FilePath c:\azp\python3.exe -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1" -Wait
+#RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+#    Start-Process -FilePath c:\azp\python3.exe -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1" -Wait
     #Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
 RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
-RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
     Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin; `
     Remove-Item -Path c:\azp\terraform.zip -Force
+
+# Vault
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile c:\azp\vault.zip; `
+    Expand-Archive -Path c:\azp\vault.zip -DestinationPath c:\bin; `
+    Remove-Item -Path c:\azp\vault.zip -Force
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
