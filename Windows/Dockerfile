@@ -26,7 +26,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
 # AzCopy
-RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip
+RUN Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip; `
+    Expand-Archive -Path c:\azp\azcopyv10.zip -DestinationPath c:\TEMP; `
+    cd C:\TEMP\azcopy*; `
+    cp azcopy.exe c:\bin
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -34,14 +37,17 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
     rm .\AzureCLI.msi
 
-# cmake
+# Cmake
 RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
     Start-Process -FilePath c:\azp\cmake.msi -Wait
 
 # Curl
 RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
-    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
-    Remove-Item -Path c:\azp\curl.zip -Force
+    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\TEMP; `
+    Remove-Item -Path c:\azp\curl.zip -Force; `
+    cd C:\TEMP\curl*; `
+    mv * ..
+    
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
@@ -51,10 +57,9 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Jq
 RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
-
 # Python 3
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-    c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1
+    Start-Process -FilePath c:\azp\python3.exe -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1" -Wait
     #Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
@@ -62,7 +67,8 @@ RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
 RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
-    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin
+    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin; `
+    Remove-Item -Path c:\azp\terraform.zip -Force
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
@@ -80,6 +86,6 @@ WORKDIR c:\azp
 
 COPY start.ps1 c:\\azp\\start.ps1
 
-RUN setx /M PATH "C:\bin;%PATH%"
+RUN setx /M PATH "C:\bin;C:\Program Files\CMake\bin;C:\curl\bin;%PATH%"
 
 ENTRYPOINT C:\\BuildTools\\Common7\\Tools\\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\\azp\\start.ps1
