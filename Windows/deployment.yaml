@@ -28,6 +28,8 @@ spec:
       nodeSelector:
           "beta.kubernetes.io/os": windows
       volumes:
-      - name: docker-pipe
-        hostPath:
-          path: \\.\pipe\docker-engine
+        - name: docker-pipe
+          hostPath: 
+            path: \\.\pipe\docker-engine
+            type: null
+      restartPolicy: Never
