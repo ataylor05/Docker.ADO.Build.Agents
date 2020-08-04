@@ -72,7 +72,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Python 3
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-    c:\azp\python3.exe /quiet InstallAllUsers=1 PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1
+    c:\azp\python3.exe /quiet InstallAllUsers=1 TargetDir=c:\ PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1
     #Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
