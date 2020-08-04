@@ -48,6 +48,10 @@ RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
     cd C:\TEMP\curl*; `
     mv * ..
     
+# Docker
+RUN cd /; `
+    git clone https://github.com/docker/cli.git
+    
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
