@@ -6,13 +6,27 @@ ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
+ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
+ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
+ENV DOTNET_CORE_URL=https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-3.1.6-windows-x64-installer
+ENV GCLOUD_SDK_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
+ENV GRADLE_URL=https://services.gradle.org/distributions/gradle-6.5.1-all.zip
+ENV GO_URL=https://golang.org/dl/go1.14.6.windows-amd64.msi
+ENV HELM2_URL=https://get.helm.sh/helm-v2.16.9-windows-amd64.zip
+ENV HELM3_URL=https://get.helm.sh/helm-v3.2.4-windows-amd64.zip
 ENV JDK_URL=https://download.oracle.com/otn-pub/java/jdk/14.0.2+12/205943a0976c4ed48cb16f1043c5c647/jdk-14.0.2_windows-x64_bin.exe
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
+ENV KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/windows/amd64/kubectl.exe
+ENV MAVEN_URL=https://mirror.olnevhost.net/pub/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip
+ENV MYSQL_URL=
+ENV NODEJS_URL=https://nodejs.org/dist/v12.18.3/node-v12.18.3-x64.msi
 ENV PACKER_URL=https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_windows_amd64.zip
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
+ENV RUBY_URL=https://rubyinstaller.org/downloads/
+ENV SALESFORCE_CLI_URL=https://developer.salesforce.com/media/salesforce-cli/sfdx-windows-amd64.exe
 ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_windows_amd64.zip
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
