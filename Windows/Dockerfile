@@ -51,15 +51,15 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     cd C:\TEMP\curl*; `
     mv * ..
     
-# Docker
-RUN cd /; `
-    git clone https://github.com/docker/cli.git
-    
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
     Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT" -Wait; `
     Remove-Item -Path c:\azp\git.exe -Force
+
+# Docker
+RUN cd /; `
+    git clone https://github.com/docker/cli.git
 
 # Jq
 RUN $ProgressPreference = 'SilentlyContinue'; `
