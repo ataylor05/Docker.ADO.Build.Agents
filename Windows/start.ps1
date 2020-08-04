@@ -1,5 +1,7 @@
 $AGENT_NAME = hostname
 
+$ENV:PATH="$ENV:PATH;c:\bin;c:\curl\bin;C:\Program Files (x86)\GnuWin32\bin;"
+
 New-Item $env:AZP_WORK -ItemType directory | Out-Null
 Set-Location agent
 
