@@ -32,4 +32,3 @@ spec:
           hostPath: 
             path: \\.\pipe\docker-engine
             type: null
-      restartPolicy: Never
