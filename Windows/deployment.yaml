@@ -22,7 +22,7 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
           - name: docker-pipe
-            mountPath: //./pipe/docker_engine
+            mountPath: ////.//pipe//docker_engine
         securityContext:
           privileged: true
       nodeSelector:
@@ -30,5 +30,5 @@ spec:
       volumes:
         - name: docker-pipe
           hostPath: 
-            path: //./pipe/docker_engine
+            path: ////.//pipe//docker_engine
             type: null
