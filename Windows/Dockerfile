@@ -9,6 +9,7 @@ ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agen
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
+ENV JDK_URL=https://download.oracle.com/otn-pub/java/jdk/14.0.2+12/205943a0976c4ed48cb16f1043c5c647/jdk-14.0.2_windows-x64_bin.exe
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
 ENV PACKER_URL=https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_windows_amd64.zip
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
@@ -59,6 +60,14 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Docker
 COPY docker-windows-amd64.exe C:\bin\docker.exe
+
+# Java Development Kit
+RUN $source = "$env:JDK_URL"; `
+    $destination = "C:\jdk.exe"; `
+    $client = new-object System.Net.WebClient; `
+    $cookie = "oraclelicense=accept-securebackup-cookie"; `
+    $client.Headers.Add([System.Net.HttpRequestHeader]::Cookie, $cookie); `
+    $client.downloadFile($source, $destination)
 
 # Jq
 RUN $ProgressPreference = 'SilentlyContinue'; `
