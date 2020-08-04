@@ -58,8 +58,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Remove-Item -Path c:\azp\git.exe -Force
 
 # Docker
-RUN cd /; `
-    git clone https://github.com/docker/cli.git
+COPY docker-windows-amd64.exe C:\bin\docker.exe
 
 # Jq
 RUN $ProgressPreference = 'SilentlyContinue'; `
