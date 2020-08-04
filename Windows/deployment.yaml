@@ -23,6 +23,8 @@ spec:
         volumeMounts:
           - name: docker-pipe
             mountPath: \\.\pipe\docker-engine
+        securityContext:
+          privileged: true
       nodeSelector:
           "beta.kubernetes.io/os": windows
       volumes:
