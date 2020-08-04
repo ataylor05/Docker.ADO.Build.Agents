@@ -17,8 +17,7 @@ ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd
 
 
 RUN mkdir c:\azp; `
-    mkdir c:\bin; `
-    $env:PATH = 'c:\bin;' + $env:PATH; 
+    mkdir c:\bin; 
 
 # ADO Agent
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -37,15 +36,12 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # cmake
 RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
-    Start-Process -FilePath c:\azp\cmake.msi -Wait; `
-    $env:PATH = 'C:\Program Files (x86)\GnuWin32\bin;' + $env:PATH;
+    Start-Process -FilePath c:\azp\cmake.msi -Wait
 
 # Curl
 RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
     Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\curl; `
-    Remove-Item -Path c:\azp\curl.zip -Force; `
-    $env:PATH = 'c:\curl\bin;' + $env:PATH;
-
+    Remove-Item -Path c:\azp\curl.zip -Force
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
