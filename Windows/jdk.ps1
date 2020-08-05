@@ -8,6 +8,6 @@ cmd /c start /wait c:\jdk.exe /s
 cd "C:\Program Files\Java"
 cd jdk-*
 $d = pwd
-$env:Path += ";$d\bin"
+setx /M PATH "$d\bin;$env:Path
 $env:JAVA_HOME = $d
 Remove-Item -Path C:\jdk.exe -Force
