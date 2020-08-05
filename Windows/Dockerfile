@@ -33,6 +33,7 @@ ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd
 RUN mkdir c:\ant; `
     mkdir c:\azp; `
     mkdir c:\bin; `
+    mkdir c:\curl; `
     mkdir c:\TEMP
 
 # ADO Agent
@@ -52,11 +53,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip; `
-    Expand-Archive -Path c:\azp\azcopyv10.zip -DestinationPath c:\TEMP; `
+    Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\TEMP\azcopyv10.zip; `
+    Expand-Archive -Path c:\TEMP\azcopyv10.zip -DestinationPath c:\TEMP; `
     cd C:\TEMP\azcopy*; `
-    cp azcopy.exe c:\bin; `
-    Remove-Item -Path c:\azp\azcopyv10.zip -Force
+    cp azcopy.exe c:\bin
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -71,18 +71,19 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Cmake
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
-    Start-Process -FilePath c:\azp\cmake.msi -Wait; `
-    Remove-Item -Path c:\azp\cmake.msi -Force
+    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\TEMP\cmake.msi; `
+    Start-Process -FilePath c:\TEMP\cmake.msi -Wait
 
 # Curl
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\azp\curl.zip; `
-    Expand-Archive -Path c:\azp\curl.zip -DestinationPath c:\TEMP; `
-    Remove-Item -Path c:\azp\curl.zip -Force; `
+    Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\TEMP\curl.zip; `
+    Expand-Archive -Path c:\TEMP\curl.zip -DestinationPath c:\TEMP; `
     cd C:\TEMP\curl*; `
-    mv * ..
-    
+    mv * c:\curl
+
+# Docker
+COPY docker-windows-amd64.exe C:\bin\docker.exe
+
 # Dotnet Core
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile c:\TEMP\dotnet-install.ps1; `
@@ -91,23 +92,22 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # GCloud SDK
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
-    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait; `
-    Remove-Item -Path C:\Temp\GoogleCloudSDKInstaller.exe -Force
+    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait
 
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
-    Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT" -Wait; `
-    Remove-Item -Path c:\azp\git.exe -Force
+    Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\TEMP\git.exe; `
+    Start-Process -FilePath c:\TEMP\git.exe -ArgumentList "/SILENT" -Wait
 
 # Go
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GO_URL -OutFile c:\azp\go.msi; `
-    Start-Process -FilePath c:\azp\go.msi -ArgumentList "/quiet" -Wait; `
-    Remove-Item -Path c:\azp\go.msi -Force
+    Invoke-WebRequest -Uri $env:GO_URL -OutFile c:\TEMP\go.msi; `
+    Start-Process -FilePath c:\TEMP\go.msi -ArgumentList "/quiet" -Wait
 
-# Docker
-COPY docker-windows-amd64.exe C:\bin\docker.exe
+# Gradle
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile c:\TEMP\gradle.zip; `
+    Start-Process -FilePath c:\azp\go.msi -ArgumentList "/quiet" -Wait
 
 # Java Development Kit
 COPY jdk.ps1 C:\TEMP\jdk.ps1
