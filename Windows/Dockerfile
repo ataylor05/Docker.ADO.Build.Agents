@@ -10,6 +10,7 @@ ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1
 ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
+ENV GCLOUD_SDK_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
 ENV GO_URL=https://golang.org/dl/go1.14.6.windows-amd64.msi
 ENV GRADLE_URL=https://services.gradle.org/distributions/gradle-6.5.1-all.zip
@@ -89,7 +90,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
    
 # GCloud SDK
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    (New-Object Net.WebClient).DownloadFile("https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "C:\Temp\GoogleCloudSDKInstaller.exe"); `
+    (New-Object Net.WebClient).DownloadFile($env:GCLOUD_SDK_URL, "C:\Temp\GoogleCloudSDKInstaller.exe"); `
     Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S /allusers" -Wait; `
     Remove-Item -Path C:\Temp\GoogleCloudSDKInstaller.exe -Force
 
