@@ -212,4 +212,4 @@ COPY ./exports.sh .
 RUN chmod +x *.sh && chown -R azp:azp /azp
 
 USER azp
-CMD ./start.sh
+CMD ./exports.sh && ./start.sh
