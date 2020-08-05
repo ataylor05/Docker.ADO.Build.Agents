@@ -67,6 +67,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
     rm .\AzureCLI.msi
 
+# Cloud Foundry CLI
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile c:\TEMP\cf_cli.zip
+
 # Cmake
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
@@ -80,6 +84,11 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Remove-Item -Path c:\azp\curl.zip -Force; `
     cd C:\TEMP\curl*; `
     mv * ..
+    
+# Dotnet Core
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile c:\TEMP\dotnet-install.ps1; `
+    c:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
     
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -138,7 +147,7 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
  || IF "%ERRORLEVEL%"=="3010" EXIT 0
 
 # Clean up
-RUN Remove-Item C:\TEMP -Recurse
+#RUN Remove-Item C:\TEMP -Recurse
 
 
 WORKDIR c:\azp
