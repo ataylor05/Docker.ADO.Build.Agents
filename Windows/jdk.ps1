@@ -7,7 +7,7 @@ $client.downloadFile($source, $destination)
 cmd /c start /wait c:\jdk.exe /s
 cd "C:\Program Files\Java"
 cd jdk*
-$env:JAVA_HOME += pwd
+setx /M PATH $($Env:JAVA_HOME + ';' + pwd) 
 cd bin
-$env:path += ";."
+setx /M PATH $($Env:PATH + ';' + pwd) 
 Remove-Item -Path C:\jdk.exe -Force
