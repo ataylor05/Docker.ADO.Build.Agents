@@ -1,6 +1,8 @@
 # escape=`
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
+RUN setx /M PATH "C:\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
+
 ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
@@ -127,7 +129,5 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
 WORKDIR c:\azp
 
 COPY start.ps1 c:\\azp\\start.ps1
-
-RUN setx /M PATH "C:\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
 
 ENTRYPOINT C:\\BuildTools\\Common7\\Tools\\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\\azp\\start.ps1
