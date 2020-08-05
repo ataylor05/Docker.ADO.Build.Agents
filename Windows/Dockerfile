@@ -78,12 +78,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 COPY docker-windows-amd64.exe C:\bin\docker.exe
 
 # Java Development Kit
-#RUN $source = "$env:JDK_URL"; `
-#    $destination = "C:\jdk.exe"; `
-#    $client = new-object System.Net.WebClient; `
-#    $cookie = "oraclelicense=accept-securebackup-cookie"; `
-#    $client.Headers.Add([System.Net.HttpRequestHeader]::Cookie, $cookie); `
-#    $client.downloadFile($source, $destination)
+COPY jdk.ps1 C:\TEMP\jdk.ps1
+RUN C:\TEMP\jdk.ps1
 
 # Jq
 RUN $ProgressPreference = 'SilentlyContinue'; `
