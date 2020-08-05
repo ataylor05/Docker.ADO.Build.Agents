@@ -45,7 +45,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip; `
     Expand-Archive -Path c:\azp\azcopyv10.zip -DestinationPath c:\TEMP; `
     cd C:\TEMP\azcopy*; `
-    cp azcopy.exe c:\bin
+    cp azcopy.exe c:\bin; `
+    Remove-Item -Path c:\azp\azcopyv10.zip -Force
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -56,7 +57,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Cmake
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\azp\cmake.msi; `
-    Start-Process -FilePath c:\azp\cmake.msi -Wait
+    Start-Process -FilePath c:\azp\cmake.msi -Wait; `
+    Remove-Item -Path c:\azp\cmake.msi -Force
 
 # Curl
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -95,7 +97,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Python 3
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-    c:\azp\python3.exe /quiet InstallAllUsers=1 TargetDir=c:\ PrependPath=1 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1
+    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1
     #Remove-Item -Path c:\azp\python3.exe -Force
 
 # Telnet
@@ -129,6 +131,6 @@ WORKDIR c:\azp
 
 COPY start.ps1 c:\\azp\\start.ps1
 
-RUN setx /M PATH "C:\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Program Files (x86)\Python38-32;%PATH%"
+RUN setx /M PATH "C:\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;%PATH%"
 
 ENTRYPOINT C:\\BuildTools\\Common7\\Tools\\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\\azp\\start.ps1
