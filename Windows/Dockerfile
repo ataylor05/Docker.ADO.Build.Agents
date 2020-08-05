@@ -22,7 +22,7 @@ ENV MYSQL_URL=https://dev.mysql.com/get/Downloads/MySQL-Shell/mysql-shell-8.0.21
 ENV NODEJS_URL=https://nodejs.org/dist/v12.18.3/node-v12.18.3-x64.msi
 ENV PACKER_URL=https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_windows_amd64.zip
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
-ENV RUBY_URL=https://rubyinstaller.org/downloads/
+ENV RUBY_URL=https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.1-1/rubyinstaller-2.7.1-1-x64.exe
 ENV SALESFORCE_CLI_URL=https://developer.salesforce.com/media/salesforce-cli/sfdx-windows-amd64.exe
 ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_windows_amd64.zip
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
@@ -118,6 +118,12 @@ RUN C:\TEMP\jdk.ps1
 
 # Python 3
 #RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+#    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+#    Remove-Item -Path c:\azp\python3.exe -Force; `
+#    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
+
+# Ruby
+#RUN Invoke-WebRequest -Uri $env:RUBY_URL -OutFile c:\TEMP\python3.exe; `
 #    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
 #    Remove-Item -Path c:\azp\python3.exe -Force; `
 #    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
