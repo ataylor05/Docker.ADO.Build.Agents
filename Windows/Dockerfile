@@ -107,7 +107,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Gradle
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile c:\TEMP\gradle.zip; `
-    Start-Process -FilePath c:\azp\go.msi -ArgumentList "/quiet" -Wait
+    Expand-Archive -Path c:\TEMP\gradle.zip -DestinationPath c:\TEMP
 
 # Java Development Kit
 COPY jdk.ps1 C:\TEMP\jdk.ps1
