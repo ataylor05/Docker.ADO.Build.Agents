@@ -8,7 +8,7 @@ ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_HOME=c:\ant
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
-ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64&source=github
+ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
 ENV DOTNET_CORE_URL=https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-3.1.6-windows-x64-installer
@@ -22,7 +22,7 @@ ENV JDK_URL=https://download.oracle.com/otn-pub/java/jdk/14.0.2+12/205943a0976c4
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
 ENV KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/windows/amd64/kubectl.exe
 ENV MAVEN_URL=https://mirror.olnevhost.net/pub/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip
-ENV MYSQL_URL=
+ENV MYSQL_URL=https://dev.mysql.com/get/Downloads/MySQL-Shell/mysql-shell-8.0.21-windows-x86-64bit.zip
 ENV NODEJS_URL=https://nodejs.org/dist/v12.18.3/node-v12.18.3-x64.msi
 ENV PACKER_URL=https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_windows_amd64.zip
 ENV PYTHON3_URL=https://www.python.org/ftp/python/3.8.5/python-3.8.5.exe
@@ -52,7 +52,6 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     cd ..; `
     Remove-Item apache-ant-* -Recurse
     
-    
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip; `
@@ -69,7 +68,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Cloud Foundry CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile c:\TEMP\cf_cli.zip
+    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile c:\TEMP\cf_cli.zip; `
+    Expand-Archive -Path c:\TEMP\cf_cli.zip -DestinationPath c:\TEMP
 
 # Cmake
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -104,35 +104,35 @@ COPY jdk.ps1 C:\TEMP\jdk.ps1
 RUN C:\TEMP\jdk.ps1
 
 # Jq
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
 # Packer
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile c:\azp\packer.zip; `
-    Expand-Archive -Path c:\azp\packer.zip -DestinationPath c:\bin; `
-    Remove-Item -Path c:\azp\packer.zip -Force
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile c:\azp\packer.zip; `
+#    Expand-Archive -Path c:\azp\packer.zip -DestinationPath c:\bin; `
+#    Remove-Item -Path c:\azp\packer.zip -Force
 
 # Python 3
-RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-    Remove-Item -Path c:\azp\python3.exe -Force; `
-    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
+#RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+#    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+#    Remove-Item -Path c:\azp\python3.exe -Force; `
+#    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Telnet
-RUN dism /online /Enable-Feature /FeatureName:TelnetClient
+#RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
-    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin; `
-    Remove-Item -Path c:\azp\terraform.zip -Force
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
+#    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin; `
+#    Remove-Item -Path c:\azp\terraform.zip -Force
 
 # Vault
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile c:\azp\vault.zip; `
-    Expand-Archive -Path c:\azp\vault.zip -DestinationPath c:\bin; `
-    Remove-Item -Path c:\azp\vault.zip -Force
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile c:\azp\vault.zip; `
+#    Expand-Archive -Path c:\azp\vault.zip -DestinationPath c:\bin; `
+#    Remove-Item -Path c:\azp\vault.zip -Force
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
