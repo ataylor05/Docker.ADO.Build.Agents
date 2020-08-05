@@ -91,7 +91,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # GCloud SDK
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
-    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S /allusers" -Wait; `
+    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait; `
     Remove-Item -Path C:\Temp\GoogleCloudSDKInstaller.exe -Force
 
 
