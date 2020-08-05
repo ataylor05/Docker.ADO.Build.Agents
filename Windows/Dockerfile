@@ -7,6 +7,7 @@ ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
+ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
@@ -64,7 +65,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Cloud Foundry CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri "https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github" -OutFile c:\TEMP\cf_cli.zip; `
+    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile c:\TEMP\cf_cli.zip; `
     Expand-Archive -Path c:\TEMP\cf_cli.zip -DestinationPath c:\bin
 
 # Cmake
