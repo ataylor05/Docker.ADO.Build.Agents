@@ -131,6 +131,10 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
     --remove Microsoft.VisualStudio.Component.Windows81SDK `
  || IF "%ERRORLEVEL%"=="3010" EXIT 0
 
+# Clean up
+RUN Remove-Item C:\TEMP -Recurse
+
+
 WORKDIR c:\azp
 
 COPY start.ps1 c:\azp\start.ps1
