@@ -9,5 +9,5 @@ cd "C:\Program Files\Java"
 cd jdk-*
 $d = pwd
 setx /M PATH "$d\bin;$env:Path"
-$env:JAVA_HOME = $d
+setx /M JAVA_HOME "$d"
 Remove-Item -Path C:\jdk.exe -Force
