@@ -34,7 +34,8 @@ ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd
 
 RUN mkdir c:\ant; `
     mkdir c:\azp; `
-    mkdir c:\bin; 
+    mkdir c:\bin; `
+    mkdir c:\TEMP
 
 # ADO Agent
 RUN $ProgressPreference = 'SilentlyContinue'; `
