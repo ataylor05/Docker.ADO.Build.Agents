@@ -1,7 +1,17 @@
 #!/bin/bash
 set -e
 
-./exports.sh
+# Adding agent capabilities env vars
+export AnsibleVersion=$(ansible --version | grep "^ansible" | cut -d " " -f 2)
+export AntVersion=$(ant -version | cut -d " " -f 4)
+export AzCopyVersion=$(azcopy --version | cut -d " " -f 3)
+export AzureCliVersion=$(az version | jq '.["azure-cli"]')
+export ClangVersion=$(clang --version | grep "clang version" | cut -d " " -f 3 | cut -d "-" -f 1)
+export CmakeVersion=$(cmake --version | grep "cmake version" | cut -d " " -f 3)
+export CloudFoundryCliVersion=$(cf -v | cut -d " " -f 3 | cut -d "+" -f 1)
+export ComposerVersion=$(composer --version | cut -d " " -f 3)
+
+
 
 if [ -z "$AZP_TOKEN_FILE" ]; then
   if [ -z "$AZP_TOKEN" ]; then
