@@ -97,7 +97,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
     cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
     Remove-Item -Path c:\azp\python3.exe -Force; `
-    pip install requests kubernetes numpy pandas pyyaml
+    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Telnet
 RUN dism /online /Enable-Feature /FeatureName:TelnetClient
@@ -128,6 +128,8 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
 
 WORKDIR c:\azp
 
-COPY start.ps1 c:\\azp\\start.ps1
+COPY start.ps1 c:\azp\start.ps1
+
+RUN setx /M PATH "C:\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
 
 ENTRYPOINT C:\\BuildTools\\Common7\\Tools\\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\\azp\\start.ps1
