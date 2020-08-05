@@ -45,7 +45,13 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Ant
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ANT_URL -OutFile c:\TEMP\ant.zip
+    Invoke-WebRequest -Uri $env:ANT_URL -OutFile c:\TEMP\ant.zip; `
+    Expand-Archive -Path c:\TEMP\ant.zip -DestinationPath c:\ant; `
+    cd c:\ant\apache*; `
+    mv * ..; `
+    cd ..; `
+    Remove-Item apache-ant-* -Recurse
+    
     
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -139,6 +145,6 @@ WORKDIR c:\azp
 
 COPY start.ps1 c:\azp\start.ps1
 
-RUN setx /M PATH "C:\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
+RUN setx /M PATH "C:\bin;C:\ant\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
 
 ENTRYPOINT C:\\BuildTools\\Common7\\Tools\\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\\azp\\start.ps1
