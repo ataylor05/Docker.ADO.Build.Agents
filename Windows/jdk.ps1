@@ -10,3 +10,4 @@ cd jdk*
 $env:JAVA_HOME += pwd
 cd bin
 $env:path += ";."
+Remove-Item -Path C:\jdk.exe -Force
