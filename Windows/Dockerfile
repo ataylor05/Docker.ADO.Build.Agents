@@ -94,7 +94,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Python 3
 RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
     cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-    Remove-Item -Path c:\azp\python3.exe -Force
+    Remove-Item -Path c:\azp\python3.exe -Force; `
+    pip install requests kubernetes numpy pandas pyyaml
 
 # Telnet
 RUN dism /online /Enable-Feature /FeatureName:TelnetClient
