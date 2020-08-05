@@ -44,8 +44,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Ant
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ANT_URL -OutFile c:\TEMP\ant.zip; `
-    Expand-Archive -Path c:\TEMP\ant.zip -DestinationPath c:\ant
+    Invoke-WebRequest -Uri $env:ANT_URL -OutFile c:\TEMP\ant.zip
     
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
