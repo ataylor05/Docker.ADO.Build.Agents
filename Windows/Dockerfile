@@ -6,6 +6,7 @@ ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
+ENV ANT_HOME=c:\ant
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
 ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
@@ -31,7 +32,8 @@ ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.1
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
 
-RUN mkdir c:\azp; `
+RUN mkdir c:\ant; `
+    mkdir c:\azp; `
     mkdir c:\bin; 
 
 # ADO Agent
@@ -40,6 +42,11 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
     Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
+# Ant
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:ANT_URL -OutFile c:\TEMP\ant.zip; `
+    Expand-Archive -Path c:\TEMP\ant.zip -DestinationPath c:\ant
+    
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\azp\azcopyv10.zip; `
