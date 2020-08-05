@@ -10,8 +10,8 @@ ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
-ENV GRADLE_URL=https://services.gradle.org/distributions/gradle-6.5.1-all.zip
 ENV GO_URL=https://golang.org/dl/go1.14.6.windows-amd64.msi
+ENV GRADLE_URL=https://services.gradle.org/distributions/gradle-6.5.1-all.zip
 ENV HELM2_URL=https://get.helm.sh/helm-v2.16.9-windows-amd64.zip
 ENV HELM3_URL=https://get.helm.sh/helm-v3.2.4-windows-amd64.zip
 ENV JDK_URL=https://download.oracle.com/otn-pub/java/jdk/14.0.2+12/205943a0976c4ed48cb16f1043c5c647/jdk-14.0.2_windows-x64_bin.exe
@@ -64,7 +64,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Cloud Foundry CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github -OutFile c:\TEMP\cf_cli.zip; `
+    Invoke-WebRequest -Uri "https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github" -OutFile c:\TEMP\cf_cli.zip; `
     Expand-Archive -Path c:\TEMP\cf_cli.zip -DestinationPath c:\bin
 
 # Cmake
