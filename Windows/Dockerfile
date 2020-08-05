@@ -69,7 +69,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Cloud Foundry CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile c:\TEMP\cf_cli.zip; `
-    Expand-Archive -Path c:\TEMP\cf_cli.zip -DestinationPath c:\TEMP
+    Expand-Archive -Path c:\TEMP\cf_cli.zip -DestinationPath c:\bin
 
 # Cmake
 RUN $ProgressPreference = 'SilentlyContinue'; `
