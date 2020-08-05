@@ -6,13 +6,9 @@ ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
-ENV ANT_HOME=c:\ant
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
-ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
-ENV DOTNET_CORE_URL=https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-3.1.6-windows-x64-installer
-ENV GCLOUD_SDK_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
 ENV GRADLE_URL=https://services.gradle.org/distributions/gradle-6.5.1-all.zip
 ENV GO_URL=https://golang.org/dl/go1.14.6.windows-amd64.msi
@@ -68,7 +64,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Cloud Foundry CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile c:\TEMP\cf_cli.zip; `
+    Invoke-WebRequest -Uri https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github -OutFile c:\TEMP\cf_cli.zip; `
     Expand-Archive -Path c:\TEMP\cf_cli.zip -DestinationPath c:\bin
 
 # Cmake
@@ -89,7 +85,14 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile c:\TEMP\dotnet-install.ps1; `
     c:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
-    
+   
+# GCloud SDK
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    (New-Object Net.WebClient).DownloadFile("https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "C:\Temp\GoogleCloudSDKInstaller.exe")
+    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S /allusers" -Wait; `
+    Remove-Item -Path C:\Temp\GoogleCloudSDKInstaller.exe -Force
+
+
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
@@ -155,5 +158,5 @@ WORKDIR c:\azp
 COPY start.ps1 c:\azp\start.ps1
 
 RUN setx /M PATH "C:\bin;C:\ant\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
-
+RUN setx /M ANT_HOME "c:\ant"
 ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\azp\start.ps1
