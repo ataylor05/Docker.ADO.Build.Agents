@@ -94,12 +94,17 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait; `
     Remove-Item -Path C:\Temp\GoogleCloudSDKInstaller.exe -Force
 
-
 # Git
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\azp\git.exe; `
     Start-Process -FilePath c:\azp\git.exe -ArgumentList "/SILENT" -Wait; `
     Remove-Item -Path c:\azp\git.exe -Force
+
+# Go
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:GO_URL -OutFile c:\azp\go.msi; `
+    Start-Process -FilePath c:\azp\go.msi -ArgumentList "/quiet" -Wait; `
+    Remove-Item -Path c:\azp\go.msi -Force
 
 # Docker
 COPY docker-windows-amd64.exe C:\bin\docker.exe
