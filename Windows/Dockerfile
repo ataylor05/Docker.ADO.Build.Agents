@@ -52,11 +52,11 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     setx /M ANT_HOME "$current_directory"
     
 # AzCopy
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest $env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
-    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\TEMP -Force; `
-    cd C:\TEMP\azcopy_windows_amd64*; `
-    cp azcopy.exe C:\bin
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest $env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
+#    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\TEMP -Force; `
+#    cd C:\TEMP\azcopy_windows_amd64*; `
+#    cp azcopy.exe C:\bin
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
