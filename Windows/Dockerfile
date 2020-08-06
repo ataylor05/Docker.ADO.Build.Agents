@@ -1,13 +1,12 @@
+# escape=`
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
 ENV AZP_URL=https://dev.azure.com/allan05
-ENV AZP_WORK=C:\azp\_work
+ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
-
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
-ENV AZ_COPY_URL=https://aka.ms/downloadazcopy-v10-windows
 ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
@@ -15,6 +14,7 @@ ENV GCLOUD_SDK_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudS
 ENV GIT_URL=https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe
 ENV GO_URL=https://golang.org/dl/go1.14.6.windows-amd64.msi
 ENV GRADLE_URL=https://services.gradle.org/distributions/gradle-6.5.1-all.zip
+ENV HELM2_URL=https://get.helm.sh/helm-v2.16.9-windows-amd64.zip
 ENV HELM3_URL=https://get.helm.sh/helm-v3.2.4-windows-amd64.zip
 ENV JDK_URL=https://download.oracle.com/otn-pub/java/jdk/14.0.2+12/205943a0976c4ed48cb16f1043c5c647/jdk-14.0.2_windows-x64_bin.exe
 ENV JQ_URL=https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe
@@ -29,116 +29,110 @@ ENV SALESFORCE_CLI_URL=https://developer.salesforce.com/media/salesforce-cli/sfd
 ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_windows_amd64.zip
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
-RUN powershell -Command \
 
-  mkdir C:\azp ; \
-  mkdir C:\bin ; \
-  mkdir C:\TEMP
+RUN mkdir c:\ant; `
+    mkdir c:\azp; `
+    mkdir c:\bin; `
+    mkdir c:\curl; `
+    mkdir c:\TEMP
 
 # ADO Agent
-RUN $ProgressPreference = 'SilentlyContinue'; \
-    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile C:\azp\vsts-agent-win.zip; \
-    Expand-Archive -Path C:\azp\vsts-agent-win.zip -DestinationPath C:\azp\agent; \
-    Remove-Item -Path C:\azp\vsts-agent-win.zip -Force
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip; `
+    Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
+    Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
 
 # Ant
-#RUN $ProgressPreference = 'SilentlyContinue'; \
-#    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; \
-#    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; \
-#    cd C:\apache-ant-*; \
-    #$d = pwd; `
-#    #setx /M PATH "$d\bin;$env:Path"
-#    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";c:\ant\bin", [EnvironmentVariableTarget]::Machine)
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:ANT_URL -OutFile c:\TEMP\ant.zip; `
+    Expand-Archive -Path c:\TEMP\ant.zip -DestinationPath c:\ant; `
+    cd c:\ant\apache*; `
+    mv * ..; `
+    cd ..; `
+    Remove-Item apache-ant-* -Recurse
     
 # AzCopy
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri https://aka.ms/downloadazcopy-v10-windows -OutFile C:\TEMP\azcopyv10.zip; `
-#    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile c:\TEMP\azcopyv10.zip; `
+    Expand-Archive -Path c:\TEMP\azcopyv10.zip -DestinationPath c:\TEMP; `
+    cd C:\TEMP\azcopy*; `
+    cp azcopy.exe c:\bin
 
 # Azure CLI
-RUN $ProgressPreference = 'SilentlyContinue'; \
-    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; \
-    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; \
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
+    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
     rm .\AzureCLI.msi
 
 # Cloud Foundry CLI
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile C:\TEMP\cf_cli.zip; `
-#    Expand-Archive -Path C:\TEMP\cf_cli.zip -DestinationPath C:\bin
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile c:\TEMP\cf_cli.zip; `
+    Expand-Archive -Path c:\TEMP\cf_cli.zip -DestinationPath c:\bin
 
 # Cmake
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile C:\TEMP\cmake.msi; `
-#    Start-Process -FilePath C:\TEMP\cmake.msi -Wait
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile c:\TEMP\cmake.msi; `
+    Start-Process -FilePath c:\TEMP\cmake.msi -Wait
 
 # Curl
-#RUN $ProgressPreference = 'SilentlyContinue'; \
-#    Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; \
-#    Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\TEMP; \
-#    cd C:\TEMP\curl-*; \
-#    mv * C:\curl
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:CURL_URL -OutFile c:\TEMP\curl.zip; `
+    Expand-Archive -Path c:\TEMP\curl.zip -DestinationPath c:\TEMP; `
+    cd C:\TEMP\curl*; `
+    mv * c:\curl
 
 # Docker
 COPY docker-windows-amd64.exe C:\bin\docker.exe
 
 # Dotnet Core
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile C:\TEMP\dotnet-install.ps1; `
-#    C:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile c:\TEMP\dotnet-install.ps1; `
+    c:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
    
 # GCloud SDK
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
-#    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
+    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait
 
 # Git
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:GIT_URL -OutFile C:\TEMP\git.exe; `
-#    Start-Process -FilePath C:\TEMP\git.exe -ArgumentList "/SILENT" -Wait
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:GIT_URL -OutFile c:\TEMP\git.exe; `
+    Start-Process -FilePath c:\TEMP\git.exe -ArgumentList "/SILENT" -Wait
 
 # Go
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:GO_URL -OutFile C:\TEMP\go.msi; `
-#    Start-Process -FilePath C:\TEMP\go.msi -ArgumentList "/quiet" -Wait
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:GO_URL -OutFile c:\TEMP\go.msi; `
+    Start-Process -FilePath c:\TEMP\go.msi -ArgumentList "/quiet" -Wait
 
 # Gradle
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile C:\TEMP\gradle.zip; `
-#    Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\TEMP
-
-# Helm 3
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:HELM3_URL -OutFile C:\TEMP\helm3.zip; `
-#    Expand-Archive -Path C:\TEMP\helm3.zip -DestinationPath C:\bin
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile c:\TEMP\gradle.zip; `
+    Expand-Archive -Path c:\TEMP\gradle.zip -DestinationPath c:\TEMP
 
 # Java Development Kit
-#COPY jdk.ps1 C:\TEMP\jdk.ps1
-#RUN C:\TEMP\jdk.ps1
+COPY jdk.ps1 C:\TEMP\jdk.ps1
+RUN C:\TEMP\jdk.ps1
 
 # Jq
 #RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:JQ_URL -OutFile C:\bin\jq.exe
-
-# Kubectl
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:KUBECTL_URL -OutFile C:\bin\kubectl.exe
+#    Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
 
 # Packer
 #RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile C:\azp\packer.zip; `
-#    Expand-Archive -Path C:\azp\packer.zip -DestinationPath C:\bin; `
-#    Remove-Item -Path C:\azp\packer.zip -Force
+#    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile c:\azp\packer.zip; `
+#    Expand-Archive -Path c:\azp\packer.zip -DestinationPath c:\bin; `
+#    Remove-Item -Path c:\azp\packer.zip -Force
 
 # Python 3
-#RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile C:\azp\python3.exe; `
-#    cmd /c start /wait C:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-#    Remove-Item -Path C:\azp\python3.exe -Force; `
+#RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+#    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+#    Remove-Item -Path c:\azp\python3.exe -Force; `
 #    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Ruby
-#RUN Invoke-WebRequest -Uri $env:RUBY_URL -OutFile C:\TEMP\python3.exe; `
-#    cmd /c start /wait C:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-#    Remove-Item -Path C:\azp\python3.exe -Force; `
+#RUN Invoke-WebRequest -Uri $env:RUBY_URL -OutFile c:\TEMP\python3.exe; `
+#    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+#    Remove-Item -Path c:\azp\python3.exe -Force; `
 #    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Telnet
@@ -146,15 +140,15 @@ COPY docker-windows-amd64.exe C:\bin\docker.exe
 
 # Terraform
 #RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile C:\azp\terraform.zip; `
-#    Expand-Archive -Path C:\azp\terraform.zip -DestinationPath C:\bin; `
-#    Remove-Item -Path C:\azp\terraform.zip -Force
+#    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
+#    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin; `
+#    Remove-Item -Path c:\azp\terraform.zip -Force
 
 # Vault
 #RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile C:\azp\vault.zip; `
-#    Expand-Archive -Path C:\azp\vault.zip -DestinationPath C:\bin; `
-#    Remove-Item -Path C:\azp\vault.zip -Force
+#    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile c:\azp\vault.zip; `
+#    Expand-Archive -Path c:\azp\vault.zip -DestinationPath c:\bin; `
+#    Remove-Item -Path c:\azp\vault.zip -Force
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
@@ -172,10 +166,10 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
 #RUN Remove-Item C:\TEMP -Recurse
 
 
-WORKDIR C:\azp
+WORKDIR c:\azp
 
-COPY start.ps1 C:\azp\start.ps1
+COPY start.ps1 c:\azp\start.ps1
 
 RUN setx /M PATH "C:\bin;C:\ant\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
-RUN setx /M ANT_HOME "C:\ant"
-ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass C:\azp\start.ps1
+RUN setx /M ANT_HOME "c:\ant"
+ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\azp\start.ps1
