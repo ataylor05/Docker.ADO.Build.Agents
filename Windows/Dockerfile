@@ -45,7 +45,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
     Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
     cd C:\apache-ant-*; `
-    $d = pwd
+    $d = pwd; `
     Rename-Item -Path $d -NewName C:\ant
     
 # AzCopy
