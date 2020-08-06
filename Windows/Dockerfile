@@ -35,6 +35,7 @@ RUN mkdir C:\ant; `
     mkdir C:\bin; `
     mkdir C:\curl; `
     mkdir C:\gradle; `
+    mkdir C:\maven; `
     mkdir C:\TEMP
 
 # ADO Agent
@@ -125,7 +126,17 @@ RUN C:\TEMP\jdk.ps1
 
 # Jq
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:JQ_URL -OutFile c:\bin\jq.exe
+    Invoke-WebRequest -Uri $env:JQ_URL -OutFile C:\bin\jq.exe
+
+# Kubectl
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:KUBECTL_URL -OutFile C:\bin\kubectl.exe
+
+# Maven
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:MAVEN_URL -OutFile C:\TEMP\maven.zip; `
+    Expand-Archive -Path C:\TEMP\maven.zip -DestinationPath C:\TEMP
+    
 
 # Packer
 #RUN $ProgressPreference = 'SilentlyContinue'; `
