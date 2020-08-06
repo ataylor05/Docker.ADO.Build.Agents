@@ -31,10 +31,8 @@ ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.1
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
 
-RUN mkdir C:\ant; `
-    mkdir C:\azp; `
+RUN mkdir C:\azp; `
     mkdir C:\bin; `
-    mkdir C:\curl; `
     mkdir C:\TEMP
 
 # ADO Agent
@@ -46,8 +44,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Ant
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
-    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\apache-ant-*; `
+    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
+    cd C:\apache-ant-*; `
     $d = pwd; `
     setx /M PATH "$d\bin;$env:Path"
     
@@ -59,10 +57,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     cp azcopy.exe C:\bin
 
 # Azure CLI
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
-#    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
-#    rm .\AzureCLI.msi
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
+    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
+    rm .\AzureCLI.msi
 
 # Cloud Foundry CLI
 #RUN $ProgressPreference = 'SilentlyContinue'; `
