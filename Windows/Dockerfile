@@ -109,7 +109,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile C:\TEMP\gradle.zip; `
     Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\; `
     cd C:\gradle-*; `
-    $d = pwd
+    $d = pwd; `
     setx /M PATH "$d\bin;$env:Path"
     
 # Helm 3
