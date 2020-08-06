@@ -30,14 +30,14 @@ ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.1
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
 
-RUN mkdir C:\azp `
-    mkdir C:\bin `
+RUN mkdir C:\azp ; \
+    mkdir C:\bin ; \
     mkdir C:\TEMP
 
 # ADO Agent
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile C:\azp\vsts-agent-win.zip; `
-    Expand-Archive -Path C:\azp\vsts-agent-win.zip -DestinationPath C:\azp\agent; `
+RUN $ProgressPreference = 'SilentlyContinue'; \
+    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile C:\azp\vsts-agent-win.zip; \
+    Expand-Archive -Path C:\azp\vsts-agent-win.zip -DestinationPath C:\azp\agent; \
     Remove-Item -Path C:\azp\vsts-agent-win.zip -Force
 
 # Ant
