@@ -2,9 +2,10 @@
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
 ENV AZP_URL=https://dev.azure.com/allan05
-ENV AZP_WORK=c:\azp\_work
+ENV AZP_WORK=C:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
+
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
 ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
@@ -30,26 +31,26 @@ ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.1
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
 
-RUN mkdir c:\ant; `
-    mkdir c:\azp; `
-    mkdir c:\bin; `
-    mkdir c:\curl; `
-    mkdir c:\TEMP
+RUN mkdir C:\ant; `
+    mkdir C:\azp; `
+    mkdir C:\bin; `
+    mkdir C:\curl; `
+    mkdir C:\TEMP
 
 # ADO Agent
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile c:\azp\vsts-agent-win.zip; `
-    Expand-Archive -Path c:\azp\vsts-agent-win.zip -DestinationPath c:\azp\agent; `
-    Remove-Item -Path c:\azp\vsts-agent-win.zip -Force
+    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile C:\azp\vsts-agent-win.zip; `
+    Expand-Archive -Path C:\azp\vsts-agent-win.zip -DestinationPath C:\azp\agent; `
+    Remove-Item -Path C:\azp\vsts-agent-win.zip -Force
 
 # Ant
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:ANT_URL -OutFile c:\TEMP\ant.zip; `
-    Expand-Archive -Path c:\TEMP\ant.zip -DestinationPath c:\ant; `
-    cd c:\ant\apache*; `
-    mv * ..; `
-    cd ..; `
-    Remove-Item apache-ant-* -Recurse
+    Expand-Archive -Path c:\TEMP\ant.zip -DestinationPath c:\TEMP
+    #cd c:\ant\apache*; `
+    #mv * ..; `
+    #cd ..; `
+    #Remove-Item apache-ant-* -Recurse
     
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
