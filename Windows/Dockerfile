@@ -46,6 +46,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
     cd C:\apache-ant-*; `
     $d = pwd; `
+    cd /; `
     Rename-Item -Path $d -NewName C:\ant
     
 # AzCopy
