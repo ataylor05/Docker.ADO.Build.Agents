@@ -116,7 +116,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:HELM3_URL -OutFile C:\TEMP\helm3.zip; `
     Expand-Archive -Path C:\TEMP\helm3.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\windows-amd64
+    cd C:\TEMP\windows-amd64; `
     mv helm.exe C:\bin
 
 # Java Development Kit
