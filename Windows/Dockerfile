@@ -42,13 +42,13 @@ RUN $ProgressPreference = 'SilentlyContinue'; \
     Remove-Item -Path C:\azp\vsts-agent-win.zip -Force
 
 # Ant
-RUN $ProgressPreference = 'SilentlyContinue'; \
-    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; \
-    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; \
-    cd C:\apache-ant-*; \
+#RUN $ProgressPreference = 'SilentlyContinue'; \
+#    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; \
+#    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; \
+#    cd C:\apache-ant-*; \
     #$d = pwd; `
-    #setx /M PATH "$d\bin;$env:Path"
-    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";c:\ant\bin", [EnvironmentVariableTarget]::Machine)
+#    #setx /M PATH "$d\bin;$env:Path"
+#    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";c:\ant\bin", [EnvironmentVariableTarget]::Machine)
     
 # AzCopy
 #RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -72,11 +72,11 @@ RUN $ProgressPreference = 'SilentlyContinue'; \
 #    Start-Process -FilePath C:\TEMP\cmake.msi -Wait
 
 # Curl
-RUN $ProgressPreference = 'SilentlyContinue'; \
-    Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; \
-    Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\TEMP; \
-    cd C:\TEMP\curl-*; \
-    mv * C:\curl
+#RUN $ProgressPreference = 'SilentlyContinue'; \
+#    Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; \
+#    Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\TEMP; \
+#    cd C:\TEMP\curl-*; \
+#    mv * C:\curl
 
 # Docker
 COPY docker-windows-amd64.exe C:\bin\docker.exe
@@ -157,7 +157,6 @@ COPY docker-windows-amd64.exe C:\bin\docker.exe
 #    Remove-Item -Path C:\azp\vault.zip -Force
 
 # Visual Studio 2019 Build Tools
-# escape=`
 SHELL ["cmd", "/S", "/C"]
 ADD https://aka.ms/vs/16/release/vs_buildtools.exe C:\TEMP\vs_buildtools.exe
 RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
