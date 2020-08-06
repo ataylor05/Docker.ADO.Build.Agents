@@ -41,10 +41,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; \
     Remove-Item -Path C:\azp\vsts-agent-win.zip -Force
 
 # Ant
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
-    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
-    cd C:\apache-ant-*; `
+RUN $ProgressPreference = 'SilentlyContinue'; \
+    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; \
+    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; \
+    cd C:\apache-ant-*; \
     #$d = pwd; `
     #setx /M PATH "$d\bin;$env:Path"
     [Environment]::SetEnvironmentVariable("Path", $env:Path + ";c:\ant\bin", [EnvironmentVariableTarget]::Machine)
@@ -55,9 +55,9 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 #    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\
 
 # Azure CLI
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
-    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
+RUN $ProgressPreference = 'SilentlyContinue'; \
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; \
+    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; \
     rm .\AzureCLI.msi
 
 # Cloud Foundry CLI
@@ -71,10 +71,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 #    Start-Process -FilePath C:\TEMP\cmake.msi -Wait
 
 # Curl
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; `
-    Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\curl-*; `
+RUN $ProgressPreference = 'SilentlyContinue'; \
+    Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; \
+    Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\TEMP; \
+    cd C:\TEMP\curl-*; \
     mv * C:\curl
 
 # Docker
