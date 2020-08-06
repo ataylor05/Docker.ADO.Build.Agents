@@ -46,9 +46,9 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
     Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
     cd C:\apache-ant-*; `
-    $d = pwd; `
+    #$d = pwd; `
     #setx /M PATH "$d\bin;$env:Path"
-    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";$d\bin", [EnvironmentVariableTarget]::Machine)
+    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";c:\ant\bin", [EnvironmentVariableTarget]::Machine)
     
 # AzCopy
 #RUN $ProgressPreference = 'SilentlyContinue'; `
