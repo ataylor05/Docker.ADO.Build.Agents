@@ -8,6 +8,7 @@ ENV AZP_TOKEN=#{ado-pat}#
 
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
+ENV AZ_CLI_URL=https://aka.ms/downloadazcopy-v10-windows
 ENV AZ_COPY_URL=https://aka.ms/downloadazcopy-v10-windows
 ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
@@ -60,7 +61,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\AzureCLI.msi; `
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile C:\TEMP\AzureCLI.msi; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I C:\TEMP\AzureCLI.msi /quiet'
 
 # Cloud Foundry CLI
