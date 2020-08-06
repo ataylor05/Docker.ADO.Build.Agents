@@ -30,12 +30,8 @@ ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.1
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
 
-RUN mkdir C:\ant; `
-    mkdir C:\azp; `
+RUN mkdir C:\azp; `
     mkdir C:\bin; `
-    mkdir C:\curl; `
-    mkdir C:\gradle; `
-    mkdir C:\maven; `
     mkdir C:\TEMP
 
 # ADO Agent
@@ -47,11 +43,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Ant
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
-    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\ant; `
-    cd C:\ant\apache*; `
-    mv * ..; `
-    cd ..; `
-    Remove-Item apache-ant-* -Recurse
+    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
+    cd C:\apache-ant-*; `
+    $d = pwd
+    Rename-Item -Path $d -NewName C:\ant
     
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -62,9 +57,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
-    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
-    rm .\AzureCLI.msi
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile C:\TEMP\AzureCLI.msi; `
+    Start-Process msiexec.exe -Wait -ArgumentList '/I C:\TEMP\AzureCLI.msi /quiet'
 
 # Cloud Foundry CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -79,9 +73,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Curl
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; `
-    Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\curl-*; `
-    mv * C:\curl
+    Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\; `
+    cd C:\curl-*; `
+    $d = pwd; `
+    Rename-Item -Path $d -NewName C:\curl
 
 # Docker
 COPY docker-windows-amd64.exe C:\bin\docker.exe
@@ -109,9 +104,10 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Gradle
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile C:\TEMP\gradle.zip; `
-    Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\gradle-; `
-    mv * C:\gradle
+    Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\; `
+    cd C:\gradle-*; `
+    $d = pwd; `
+    Rename-Item -Path $d -NewName C:\gradle
 
 # Helm 3
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -135,8 +131,18 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Maven
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:MAVEN_URL -OutFile C:\TEMP\maven.zip; `
-    Expand-Archive -Path C:\TEMP\maven.zip -DestinationPath C:\TEMP
-    
+    Expand-Archive -Path C:\TEMP\maven.zip -DestinationPath C:\
+    cd C:\apache-maven-*; `
+    $d = pwd; `
+    Rename-Item -Path $d -NewName C:\maven
+ 
+# MySQL Shell
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:MYSQL_URL -OutFile C:\TEMP\mysql-shell.zip; `
+    Expand-Archive -Path C:\TEMP\mysql-shell.zip -DestinationPath C:\; `
+    cd mysql-shell-*; `
+    $d = pwd; `
+    Rename-Item -Path $d -NewName C:\mysql-shell
 
 # Packer
 #RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -191,6 +197,8 @@ WORKDIR c:\azp
 
 COPY start.ps1 c:\azp\start.ps1
 
-RUN setx /M PATH "C:\bin;C:\ant\bin;C:\gradle\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
+RUN setx /M PATH "C:\bin;C:\ant\bin;C:\gradle\bin;C:\maven\bin;C:\mysql-shell;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
 RUN setx /M ANT_HOME "c:\ant"
+RUN setx /M GRADLE_HOME "c:\gradle"
+RUN setx /M MAVEN_HOME "c:\maven"
 ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\azp\start.ps1
