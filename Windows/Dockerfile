@@ -54,7 +54,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest $env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
-    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\TEMP; `
+    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\TEMP -Force; `
     cd C:\TEMP\azcopy_windows_amd64*; `
     cp azcopy.exe C:\bin
 
