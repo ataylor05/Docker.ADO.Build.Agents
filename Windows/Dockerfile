@@ -8,6 +8,7 @@ ENV AZP_TOKEN=#{ado-pat}#
 
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
+ENV AZ_COPY_URL=https://aka.ms/downloadazcopy-v10-windows
 ENV CLOUD_FOUNDRY_CLI_URL=https://packages.cloudfoundry.org/stable?release=windows64-exe&source=github
 ENV CMAKE_URL=https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-win64-x64.msi
 ENV CURL_URL=https://curl.haxx.se/windows/dl-7.71.1/curl-7.71.1-win64-mingw.zip
@@ -45,17 +46,16 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Ant
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
-    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\TEMP
-    #cd C:\ant\apache*; `
-    #mv * ..; `
-    #cd ..; `
-    #Remove-Item apache-ant-* -Recurse
+    Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\TEMP; `
+    cd C:\TEMP\apache-ant-*; `
+    $d = pwd; `
+    setx /M PATH "$d\bin;$env:Path"
     
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile C:\TEMP\azcopyv10.zip; `
+    Invoke-WebRequest -Uri #env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
     Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\azcopy*; `
+    cd C:\TEMP\azcopy_windows_amd64_*; `
     cp azcopy.exe C:\bin
 
 # Azure CLI
