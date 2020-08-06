@@ -59,20 +59,20 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     cp azcopy.exe C:\bin
 
 # Azure CLI
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
-    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
-    rm .\AzureCLI.msi
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; `
+#    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; `
+#    rm .\AzureCLI.msi
 
 # Cloud Foundry CLI
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile C:\TEMP\cf_cli.zip; `
-    Expand-Archive -Path C:\TEMP\cf_cli.zip -DestinationPath C:\bin
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile C:\TEMP\cf_cli.zip; `
+#    Expand-Archive -Path C:\TEMP\cf_cli.zip -DestinationPath C:\bin
 
 # Cmake
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile C:\TEMP\cmake.msi; `
-    Start-Process -FilePath C:\TEMP\cmake.msi -Wait
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile C:\TEMP\cmake.msi; `
+#    Start-Process -FilePath C:\TEMP\cmake.msi -Wait
 
 # Curl
 RUN $ProgressPreference = 'SilentlyContinue'; `
@@ -85,46 +85,46 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 COPY docker-windows-amd64.exe C:\bin\docker.exe
 
 # Dotnet Core
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile C:\TEMP\dotnet-install.ps1; `
-    C:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile C:\TEMP\dotnet-install.ps1; `
+#    C:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
    
 # GCloud SDK
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
-    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
+#    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait
 
 # Git
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GIT_URL -OutFile C:\TEMP\git.exe; `
-    Start-Process -FilePath C:\TEMP\git.exe -ArgumentList "/SILENT" -Wait
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:GIT_URL -OutFile C:\TEMP\git.exe; `
+#    Start-Process -FilePath C:\TEMP\git.exe -ArgumentList "/SILENT" -Wait
 
 # Go
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GO_URL -OutFile C:\TEMP\go.msi; `
-    Start-Process -FilePath C:\TEMP\go.msi -ArgumentList "/quiet" -Wait
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:GO_URL -OutFile C:\TEMP\go.msi; `
+#    Start-Process -FilePath C:\TEMP\go.msi -ArgumentList "/quiet" -Wait
 
 # Gradle
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile C:\TEMP\gradle.zip; `
-    Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\TEMP
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile C:\TEMP\gradle.zip; `
+#    Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\TEMP
 
 # Helm 3
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:HELM3_URL -OutFile C:\TEMP\helm3.zip; `
-    Expand-Archive -Path C:\TEMP\helm3.zip -DestinationPath C:\bin
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:HELM3_URL -OutFile C:\TEMP\helm3.zip; `
+#    Expand-Archive -Path C:\TEMP\helm3.zip -DestinationPath C:\bin
 
 # Java Development Kit
-COPY jdk.ps1 C:\TEMP\jdk.ps1
-RUN C:\TEMP\jdk.ps1
+#COPY jdk.ps1 C:\TEMP\jdk.ps1
+#RUN C:\TEMP\jdk.ps1
 
 # Jq
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:JQ_URL -OutFile C:\bin\jq.exe
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:JQ_URL -OutFile C:\bin\jq.exe
 
 # Kubectl
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:KUBECTL_URL -OutFile C:\bin\kubectl.exe
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri $env:KUBECTL_URL -OutFile C:\bin\kubectl.exe
 
 # Packer
 #RUN $ProgressPreference = 'SilentlyContinue'; `
