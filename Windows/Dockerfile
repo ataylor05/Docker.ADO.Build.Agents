@@ -131,7 +131,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 # Maven
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:MAVEN_URL -OutFile C:\TEMP\maven.zip; `
-    Expand-Archive -Path C:\TEMP\maven.zip -DestinationPath C:\
+    Expand-Archive -Path C:\TEMP\maven.zip -DestinationPath C:\; `
     cd C:\apache-maven-*; `
     $d = pwd; `
     Rename-Item -Path $d -NewName C:\maven
