@@ -78,7 +78,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; `
     Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\curl*; `
+    cd C:\TEMP\curl-*; `
     mv * C:\curl
 
 # Docker
