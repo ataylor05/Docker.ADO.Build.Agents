@@ -50,9 +50,9 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     setx /M PATH "$d\bin;$env:Path"
     
 # AzCopy
-RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
-    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\
+#RUN $ProgressPreference = 'SilentlyContinue'; `
+#    Invoke-WebRequest -Uri https://aka.ms/downloadazcopy-v10-windows -OutFile C:\TEMP\azcopyv10.zip; `
+#    Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
