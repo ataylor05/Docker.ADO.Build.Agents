@@ -53,14 +53,14 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     
 # AzCopy
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest https://aka.ms/downloadazcopy-v10-windows -OutFile C:\TEMP\azcopyv10.zip; `
+    Invoke-WebRequest $env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
     Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\TEMP; `
-    cd C:\TEMP\azcopy*; `
+    cd C:\TEMP\azcopy_windows_amd64*; `
     cp azcopy.exe C:\bin
 
 # Azure CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile C:\TEMP\AzureCLI.msi; `
+    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\AzureCLI.msi; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I C:\TEMP\AzureCLI.msi /quiet'
 
 # Cloud Foundry CLI
