@@ -1,4 +1,3 @@
-# escape=`
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
 ENV AZP_URL=https://dev.azure.com/allan05
@@ -31,8 +30,8 @@ ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.1
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
 
-RUN mkdir C:\azp; `
-    mkdir C:\bin; `
+RUN mkdir C:\azp;
+    mkdir C:\bin;
     mkdir C:\TEMP
 
 # ADO Agent
@@ -157,6 +156,7 @@ COPY docker-windows-amd64.exe C:\bin\docker.exe
 #    Remove-Item -Path C:\azp\vault.zip -Force
 
 # Visual Studio 2019 Build Tools
+# escape=`
 SHELL ["cmd", "/S", "/C"]
 ADD https://aka.ms/vs/16/release/vs_buildtools.exe C:\TEMP\vs_buildtools.exe
 RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
