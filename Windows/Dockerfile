@@ -29,10 +29,11 @@ ENV SALESFORCE_CLI_URL=https://developer.salesforce.com/media/salesforce-cli/sfd
 ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_windows_amd64.zip
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
+RUN powershell -Command \
 
-RUN mkdir C:\azp ; \
-    mkdir C:\bin ; \
-    mkdir C:\TEMP
+  mkdir C:\azp ; \
+  mkdir C:\bin ; \
+  mkdir C:\TEMP
 
 # ADO Agent
 RUN $ProgressPreference = 'SilentlyContinue'; \
