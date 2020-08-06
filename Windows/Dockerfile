@@ -47,8 +47,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
     Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
     cd C:\apache-ant*; `
-    $current_directory = pwd
-    setx /M PATH "$current_directory\bin;$env:Path"
+    $current_directory = pwd; `
+    setx /M PATH "$current_directory\bin;$env:Path"; `
     setx /M ANT_HOME "$current_directory"
     
 # AzCopy
