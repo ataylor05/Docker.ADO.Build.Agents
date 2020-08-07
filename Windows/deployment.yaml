@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ado-windows-agent
+  name: #{deployment-name}#
   labels:
-    app: ado-windows-agent
+    app: #{deployment-name}#
 spec:
-  replicas: 1
+  replicas: #{deployment-replicas}#
   selector:
     matchLabels:
-      app: ado-windows-agent
+      app: #{deployment-name}#
   template:
     metadata:
       labels:
-        app: ado-windows-agent
+        app: #{deployment-name}#
     spec:
       containers:
-      - name: ado-windows-agent
-        image: ataylorregistry.azurecr.io/ado-windows-agent:1.0
+      - name: #{deployment-name}#
+        image: ataylorregistry.azurecr.io/ado-windows-agent:#{image-tag}#
         ports:
         - containerPort: 443
         imagePullPolicy: Always
