@@ -77,6 +77,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\; `
     cd C:\curl-*; `
     $d = pwd; `
+    cd /; `
     Rename-Item -Path $d -NewName C:\curl
 
 # Docker
@@ -108,6 +109,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\; `
     cd C:\gradle-*; `
     $d = pwd; `
+    cd /; `
     Rename-Item -Path $d -NewName C:\gradle
 
 # Helm 3
@@ -135,6 +137,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path C:\TEMP\maven.zip -DestinationPath C:\; `
     cd C:\apache-maven-*; `
     $d = pwd; `
+    cd /; `
     Rename-Item -Path $d -NewName C:\maven
  
 # MySQL Shell
@@ -143,6 +146,7 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path C:\TEMP\mysql-shell.zip -DestinationPath C:\; `
     cd mysql-shell-*; `
     $d = pwd; `
+    cd /; `
     Rename-Item -Path $d -NewName C:\mysql-shell
 
 # Packer
