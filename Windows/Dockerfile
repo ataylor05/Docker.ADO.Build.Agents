@@ -121,11 +121,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     mv helm.exe C:\bin
 
 # Java Development Kit
-#COPY jdk.ps1 C:\TEMP\jdk.ps1
-RUN $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession; `
-    $session.Cookies.Add("oraclelicense=accept-securebackup-cookie"); ; `
-    Invoke-WebRequest $remoteFileLocation -WebSession $session -OutFile C:\TEMP\jdk.exe; `
-    cmd /c start /wait c:\jdk.exe /s
+COPY jdk.ps1 C:\TEMP\jdk.ps1
+RUN C:\TEMP\jdk.ps1
 
 # Jq
 RUN $ProgressPreference = 'SilentlyContinue'; `
