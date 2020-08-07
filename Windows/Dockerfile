@@ -202,7 +202,7 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
  || IF "%ERRORLEVEL%"=="3010" EXIT 0
 
 
-RUN rmdir /s C:\TEMP
+RUN rmdir /Q /S C:\TEMP
 
 WORKDIR C:\azp
 
