@@ -149,17 +149,21 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     cd /; `
     Rename-Item -Path $d -NewName C:\mysql-shell
 
+# Node Js
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:NODEJS_URL -OutFile C:\TEMP\node.msi; `
+    Start-Process msiexec.exe -Wait -ArgumentList '/I C:\TEMP\node.msi /qn'
+
 # Packer
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile c:\azp\packer.zip; `
-#    Expand-Archive -Path c:\azp\packer.zip -DestinationPath c:\bin; `
-#    Remove-Item -Path c:\azp\packer.zip -Force
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile C:\TEMP\packer.zip; `
+    Expand-Archive -Path C:\TEMP\packer.zip -DestinationPath C:\bin
 
 # Python 3
-#RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
-#    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-#    Remove-Item -Path c:\azp\python3.exe -Force; `
-#    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
+RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+    Remove-Item -Path c:\azp\python3.exe -Force; `
+    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Ruby
 #RUN Invoke-WebRequest -Uri $env:RUBY_URL -OutFile c:\TEMP\python3.exe; `
