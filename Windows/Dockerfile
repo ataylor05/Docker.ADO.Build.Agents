@@ -168,8 +168,8 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
 
 # Ruby
 RUN $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:RUBY_URL -OutFile C:\TEMP\rudy.exe; `
-    Start-Process -FilePath C:\TEMP\rudy.exe -ArgumentList "/tasks="assocfiles,modpath" /silent" -Wait
+    Invoke-WebRequest -Uri $env:RUBY_URL -OutFile C:\TEMP\ruby.exe; `
+    cmd /c start /wait C:\TEMP\ruby.exe /tasks="assocfiles,modpath" /silent"
 
 # Salesforce CLI
 RUN $ProgressPreference = 'SilentlyContinue'; `
