@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: #{deployment-name}#
-        image: ataylorregistry.azurecr.io/ado-windows-agent:#{image-tag}#
+        image: #{acr-name}#.azurecr.io/ado-windows-agent:#{image-tag}#
         ports:
         - containerPort: 443
         imagePullPolicy: Always
