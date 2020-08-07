@@ -1,0 +1,38 @@
+trigger:
+- master
+
+pool:
+  vmImage: windows-2019
+
+steps:
+- task: AzureKeyVault@1
+  displayName: 'Get Secrets from KeyVault'
+  inputs:
+    azureSubscription: 'AKS'
+    KeyVaultName: 'KV'
+    SecretsFilter: 'PAT,sa'
+    RunAsPreJob: false
+
+- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  displayName: 'Replace tokens in Dockerfile'
+  inputs:
+    rootDirectory: '$(System.DefaultWorkingDirectory)/Windows'
+    targetFiles: '**/Dockerfile'
+
+- task: CmdLine@2
+  displayName: 'Build image'
+  inputs:
+    script: |
+      docker build -t ado-agent-windows:$(image-tag) .
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Windows'
+
+- task: AzureCLI@2
+  displayName: 'Push image to Artifactory'
+  inputs:
+    azureSubscription: 'AKS'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      docker login --username='sa' --password=$(sa) jfrog.io
+      docker push jfrog.io/ado-agent-windows:$(image-tag)
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Windows'
