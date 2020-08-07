@@ -1,16 +1,15 @@
 trigger:
 - master
 
-pool:
-  vmImage: windows-2019
+pool: aks-windows
 
 steps:
 - task: AzureKeyVault@1
   displayName: 'Get Secrets from KeyVault'
   inputs:
     azureSubscription: 'AKS'
-    KeyVaultName: 'KV'
-    SecretsFilter: 'PAT,sa'
+    KeyVaultName: 'ataylor-ado-pipelines'
+    SecretsFilter: 'ado-pat'
     RunAsPreJob: false
 
 - task: qetza.replacetokens.replacetokens-task.replacetokens@3
@@ -27,12 +26,12 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)/Windows'
 
 - task: AzureCLI@2
-  displayName: 'Push image to Artifactory'
+  displayName: 'Push image to Azure Container Registry'
   inputs:
     azureSubscription: 'AKS'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      docker login --username='sa' --password=$(sa) jfrog.io
-      docker push jfrog.io/ado-agent-windows:$(image-tag)
+      az acr login -n $(acr-name)
+      docker push $(acr-name).azurecr.io/ado-agent-windows:$(image-tag)
     workingDirectory: '$(System.DefaultWorkingDirectory)/Windows'
