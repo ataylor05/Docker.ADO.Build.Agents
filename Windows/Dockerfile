@@ -208,7 +208,7 @@ WORKDIR C:\azp
 
 COPY start.ps1 C:\azp\start.ps1
 
-RUN setx /M PATH "C:\bin;C:\ant\bin;C:\gradle\bin;C:\maven\bin;C:\mysql-shell;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
+RUN setx /M PATH "C:\bin;C:\ant\bin;C:\gradle\bin;C:\maven\bin;C:\mysql-shell\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
 RUN setx /M ANT_HOME "C:\ant"
 RUN setx /M GRADLE_HOME "C:\gradle"
 RUN setx /M MAVEN_HOME "C:\maven"
