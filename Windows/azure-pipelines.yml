@@ -29,7 +29,7 @@ steps:
   displayName: 'Push image to Azure Container Registry'
   inputs:
     azureSubscription: 'AKS'
-    scriptType: 'bash'
+    scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
       az acr login -n $(acr-name)
