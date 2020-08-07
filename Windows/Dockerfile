@@ -5,6 +5,7 @@ ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
 ENV AZP_TOKEN=#{ado-pat}#
+
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
 ENV AZ_COPY_URL=https://aka.ms/downloadazcopy-v10-windows
@@ -160,31 +161,33 @@ RUN $ProgressPreference = 'SilentlyContinue'; `
     Expand-Archive -Path C:\TEMP\packer.zip -DestinationPath C:\bin
 
 # Python 3
-RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile c:\azp\python3.exe; `
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile C:\TEMP\python3.exe; `
     cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-    Remove-Item -Path c:\azp\python3.exe -Force; `
     C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Ruby
-#RUN Invoke-WebRequest -Uri $env:RUBY_URL -OutFile c:\TEMP\python3.exe; `
-#    cmd /c start /wait c:\azp\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
-#    Remove-Item -Path c:\azp\python3.exe -Force; `
-#    C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:RUBY_URL -OutFile C:\TEMP\rudy.exe; `
+    Start-Process -FilePath C:\TEMP\rudy.exe -ArgumentList "/tasks="assocfiles,modpath" /silent" -Wait
+
+# Salesforce CLI
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:SALESFORCE_CLI_URL -OutFile C:\TEMP\sf_cli.exe; `
+    Start-Process -FilePath C:\Temp\sf_cli.exe -ArgumentList "/S" -Wait
 
 # Telnet
-#RUN dism /online /Enable-Feature /FeatureName:TelnetClient
+RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile c:\azp\terraform.zip; `
-#    Expand-Archive -Path c:\azp\terraform.zip -DestinationPath c:\bin; `
-#    Remove-Item -Path c:\azp\terraform.zip -Force
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile C:\TEMP\terraform.zip; `
+    Expand-Archive -Path C:\TEMP\terraform.zip -DestinationPath c:\bin
 
 # Vault
-#RUN $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile c:\azp\vault.zip; `
-#    Expand-Archive -Path c:\azp\vault.zip -DestinationPath c:\bin; `
-#    Remove-Item -Path c:\azp\vault.zip -Force
+RUN $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile C:\TEMP\vault.zip; `
+    Expand-Archive -Path C:\TEMP\vault.zip -DestinationPath c:\bin
 
 # Visual Studio 2019 Build Tools
 SHELL ["cmd", "/S", "/C"]
@@ -198,16 +201,16 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
     --remove Microsoft.VisualStudio.Component.Windows81SDK `
  || IF "%ERRORLEVEL%"=="3010" EXIT 0
 
-# Clean up
-#RUN Remove-Item C:\TEMP -Recurse
 
+RUN rmdir /s C:\TEMP
 
-WORKDIR c:\azp
+WORKDIR C:\azp
 
-COPY start.ps1 c:\azp\start.ps1
+COPY start.ps1 C:\azp\start.ps1
 
 RUN setx /M PATH "C:\bin;C:\ant\bin;C:\gradle\bin;C:\maven\bin;C:\mysql-shell;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
-RUN setx /M ANT_HOME "c:\ant"
-RUN setx /M GRADLE_HOME "c:\gradle"
-RUN setx /M MAVEN_HOME "c:\maven"
+RUN setx /M ANT_HOME "C:\ant"
+RUN setx /M GRADLE_HOME "C:\gradle"
+RUN setx /M MAVEN_HOME "C:\maven"
+
 ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\azp\start.ps1
