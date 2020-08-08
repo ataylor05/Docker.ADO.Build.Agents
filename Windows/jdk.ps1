@@ -1,3 +1,4 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $source = "$env:JDK_URL"
 $destination = "C:\jdk.exe"
 $client = new-object System.Net.WebClient
