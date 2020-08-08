@@ -23,3 +23,12 @@ git clone https://github.com/docker/cli.git
 cd cli
 make -f docker.Makefile binary-windows
 </pre>
+
+## Docker on Windows Server 2016
+<pre>
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Install-PackageProvider -Name NuGet -Force
+Install-Module -Name DockerMsftProvider -Repository PSGallery
+Install-Package -Name docker -ProviderName DockerMsftProvider
+Restart-Computer -Force
+</pre>
