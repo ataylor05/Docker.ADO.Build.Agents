@@ -1,7 +1,5 @@
 # escape=`
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2016
-#FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
-
 
 ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_WORK=c:\azp\_work
@@ -91,7 +89,10 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Rename-Item -Path $d -NewName C:\curl
 
 # Docker
-COPY docker-windows-amd64.exe C:\bin\docker.exe
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
+    Install-PackageProvider -Name NuGet -Force; `
+    Install-Module -Name DockerMsftProvider -Repository PSGallery; `
+    Install-Package -Name docker -ProviderName DockerMsftProvider
 
 # Dotnet Core
 #RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
