@@ -10,7 +10,7 @@ docker build -t ado-windows-agent:1.0 .
 </pre>
 
 # Docker in Docker
-The Docker process on the Kubernetes hosts are being shared with the agent pods so that the pods are able to use the Docker engine.  This is done via the Kubernetes deloyment manifest by sharing a named pipe.  It's possible to also share the named pipe via Docker.<br>
+The Docker process on the Kubernetes hosts are being shared with the agent pods so that the pods are able to use the Docker engine.  This is done via the Kubernetes deloyment manifest by sharing a named pipe.  It's possible to also share the named pipe via Docker.  **Sharing named pipes does not work in Windows Server 2016**.<br>
 <pre>
 docker run -d -p 80:80 -v \\.\pipe\docker_engine:\\.\pipe\docker_engine ado-windows-agent:1.0
 </pre>
@@ -31,4 +31,9 @@ Install-PackageProvider -Name NuGet -Force
 Install-Module -Name DockerMsftProvider -Repository PSGallery
 Install-Package -Name docker -ProviderName DockerMsftProvider
 Restart-Computer -Force
+</pre>
+
+## Running containers locally
+<pre>
+docker container run -d --restart always ado-windows-agent:1.0
 </pre>
