@@ -25,12 +25,29 @@ make -f docker.Makefile binary-windows
 </pre>
 
 ## Docker on Windows Server 2016
+Installing Docker
 <pre>
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name DockerMsftProvider -Repository PSGallery
 Install-Package -Name docker -ProviderName DockerMsftProvider
 Restart-Computer -Force
+</pre><br><br>
+
+Configure Docker daemon
+<pre>
+{
+    "dns": [],
+    "data-root": "",
+    "debug": true,
+    "hosts": ["tcp://0.0.0.0:2375", "npipe://"],
+    "group": "Users"
+}
+</pre><br><br>
+
+Restart service
+<pre>
+Restart-Service -Name "Docker Engine"
 </pre>
 
 ## Running containers locally
