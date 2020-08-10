@@ -6,7 +6,7 @@ This project is intended for Azure Devops Pipelines to build the Docker image, h
 <pre>
 git clone https://github.com/ataylor05/Docker.ADO.Build.Agents.git
 cd Docker.ADO.Build.Agents\Windows
-docker build -t ado-windows-agent:1.0 .
+docker build -t ado-windows-agent:1.0 Dockerfile-2016
 </pre>
 
 # Docker in Docker
