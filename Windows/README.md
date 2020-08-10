@@ -36,6 +36,8 @@ Restart-Computer -Force
 
 Configure Docker daemon
 <pre>
+C:\ProgramData\Docker\config\deamon.json
+
 {
     "dns": [],
     "data-root": "",
@@ -48,6 +50,11 @@ Configure Docker daemon
 Restart service
 <pre>
 Restart-Service -Name "Docker Engine"
+</pre><br><br>
+
+Set proxy on 2375
+<pre>
+netsh interface portproxy add v4tov4 listenport=2375 connectaddress=127.0.0.1 connectport=2375 listenaddress=<HOST_IP> protocol=tcp
 </pre>
 
 ## Running containers locally
