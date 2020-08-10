@@ -1,0 +1,37 @@
+trigger:
+- master
+
+pool: aks-linux
+
+steps:
+- task: AzureKeyVault@1
+  displayName: 'Get Secrets from KeyVault'
+  inputs:
+    azureSubscription: 'AKS'
+    KeyVaultName: 'ataylor-ado-pipelines'
+    SecretsFilter: 'ado-pat'
+    RunAsPreJob: false
+
+- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  displayName: 'Replace tokens in Dockerfile'
+  inputs:
+    rootDirectory: '$(System.DefaultWorkingDirectory)/Linux'
+    targetFiles: '**/Dockerfile'
+
+- task: CmdLine@2
+  displayName: 'Build image'
+  inputs:
+    script: |
+      docker build -t $(acr-name).azurecr.io/ado-agent-linux:$(image-tag) .
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
+
+- task: AzureCLI@2
+  displayName: 'Push image to Azure Container Registry'
+  inputs:
+    azureSubscription: 'AKS'
+    scriptType: 'shell'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az acr login -n $(acr-name)
+      docker push $(acr-name).azurecr.io/ado-agent-linux:$(image-tag)
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
