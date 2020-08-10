@@ -95,16 +95,16 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Install-Package -Name docker -ProviderName DockerMsftProvider -Force
 
 # Dotnet Core
-#RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-#    $ProgressPreference = 'SilentlyContinue'; `
-#    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile C:\TEMP\dotnet-install.ps1; `
-#    C:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
+    $ProgressPreference = 'SilentlyContinue'; `
+    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile C:\TEMP\dotnet-install.ps1; `
+    C:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
    
 # GCloud SDK
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
     $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
-    Start-Process -FilePath C:\Temp\GoogleCloudSDKInstaller.exe -ArgumentList "/S" -Wait
+    cmd /c start /wait C:\Temp\GoogleCloudSDKInstaller.exe /S
 
 # Git
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
@@ -186,7 +186,7 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
     $ProgressPreference = 'SilentlyContinue'; `
     Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile C:\TEMP\python3.exe; `
-    cmd /c start /wait C:\TEMP\python3.exe /quiet TargetDir=C:\Python36-x64 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
+    cmd /c start /wait C:\TEMP\python3.exe /quiet TargetDir=C:\Python36-x64 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
     C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Ruby
@@ -228,9 +228,18 @@ RUN C:\TEMP\vs_buildtools.exe --quiet --wait --norestart --nocache `
     --remove Microsoft.VisualStudio.Component.Windows81SDK `
  || IF "%ERRORLEVEL%"=="3010" EXIT 0
 
-
 RUN rmdir /Q /S C:\TEMP
 
+WORKDIR C:\azp
+
+COPY start.ps1 C:\azp\start.ps1
+
+RUN setx /M PATH "C:\bin;C:\ant\bin;C:\gradle\bin;C:\maven\bin;C:\mysql-shell\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
+RUN setx /M ANT_HOME "C:\ant"
+RUN setx /M GRADLE_HOME "C:\gradle"
+RUN setx /M MAVEN_HOME "C:\maven"
+
+ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\azp\start.ps1
 WORKDIR C:\azp
 
 COPY start.ps1 C:\azp\start.ps1
