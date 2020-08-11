@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  windows:
+    image: ataylorregistry.azurecr.io/ado-windows-agent:1.0
+networks:
+  default:
+    external:
+      name: overlay
