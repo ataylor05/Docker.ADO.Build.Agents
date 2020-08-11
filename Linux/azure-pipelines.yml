@@ -22,14 +22,14 @@ steps:
   displayName: 'Build image'
   inputs:
     script: |
-      sudo docker build -t $(acr-name).azurecr.io/ado-agent-linux:$(image-tag) .
+      docker build -t $(acr-name).azurecr.io/ado-agent-linux:$(image-tag) .
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
 - task: AzureCLI@2
   displayName: 'Push image to Azure Container Registry'
   inputs:
     azureSubscription: 'AKS'
-    scriptType: 'shell'
+    scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
       az acr login -n $(acr-name)
