@@ -4,6 +4,7 @@ ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_TOKEN_FILE=/azp/token
 ENV AZP_WORK=/azp/_work
 ENV AZP_POOL=aks-linux
+
 ENV DEBIAN_FRONTEND=noninteractive
 ENV AdoAgentUrl=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-linux-x64-2.172.2.tar.gz
 ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
@@ -42,10 +43,6 @@ RUN apt-get update \
         wget \
         zip
 
-RUN groupadd -g 1000 azp \
-        && useradd -d /azp -u 1000 -g azp -G sudo -m -s /bin/bash azp \
-        && sed -i /etc/sudoers -re 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD: ALL/g'
-
 # Ansible
 RUN apt-get install ansible -y
 
@@ -82,8 +79,7 @@ RUN wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.k
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
   && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
   && apt-get update \
-  && apt-get install -y docker-ce docker-ce-cli containerd.io \
-  && usermod -aG docker azp
+  && apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Dotnet Core
 RUN wget -q $DotNetCoreUrl -O /tmp/packages-microsoft-prod.deb \
@@ -210,7 +206,5 @@ RUN echo "#{ado-pat}#" > /azp/token
 
 COPY ./start.sh .
 COPY ./exports.sh .
-RUN chmod +x *.sh && chown -R azp:azp /azp
 
-USER azp
 CMD ./start.sh
