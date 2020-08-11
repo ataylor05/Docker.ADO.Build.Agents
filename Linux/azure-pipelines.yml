@@ -22,9 +22,7 @@ steps:
   displayName: 'Build image'
   inputs:
     script: |
-      sudo docker build -t $(acr-name).azurecr.io/ado-agent-linux:$(image-tag) .
-      ls -lah
-      touch /azp/pipelinetest
+      docker build -t $(acr-name).azurecr.io/ado-agent-linux:$(image-tag) .
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
 - task: AzureCLI@2
@@ -35,5 +33,5 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az acr login -n $(acr-name)
-      sudo docker push $(acr-name).azurecr.io/ado-agent-linux:$(image-tag)
+      docker push $(acr-name).azurecr.io/ado-agent-linux:$(image-tag)
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
