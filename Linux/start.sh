@@ -1,35 +1,10 @@
 #!/bin/bash
 set -e
 
-# Adding agent capabilities env vars
-export AnsibleVersion=$(ansible --version | grep "^ansible" | cut -d " " -f 2)
-export AntVersion=$(ant -version | cut -d " " -f 4)
-export AzCopyVersion=$(azcopy --version | cut -d " " -f 3)
-export AzureCliVersion=$(az version | jq '.["azure-cli"]')
-export ClangVersion=$(clang --version | grep "clang version" | cut -d " " -f 3 | cut -d "-" -f 1)
-export CmakeVersion=$(cmake --version | grep "cmake version" | cut -d " " -f 3)
-export CloudFoundryCliVersion=$(cf -v | cut -d " " -f 3 | cut -d "+" -f 1)
-export ComposerVersion=$(composer --version | cut -d " " -f 3)
-
-
-
-if [ -z "$AZP_TOKEN_FILE" ]; then
-  if [ -z "$AZP_TOKEN" ]; then
-    echo 1>&2 "error: missing AZP_TOKEN environment variable"
-    exit 1
-  fi
-
-  AZP_TOKEN_FILE=/azp/.token
-  echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
-fi
-
-unset AZP_TOKEN
-
 if [ -n "$AZP_WORK" ]; then
   mkdir -p "$AZP_WORK"
 fi
 
-rm -rf /azp/agent
 mkdir /azp/agent
 cd /azp/agent
 
@@ -43,7 +18,7 @@ export VSO_AGENT_IGNORE=$VSO_AGENT_IGNORE,VSO_AGENT_IGNORE
 
 
 AZP_AGENT_RESPONSE=$(curl -LsS \
-  -u user:$(cat "$AZP_TOKEN_FILE") \
+  -u user:$AZP_TOKEN \
   -H 'Accept:application/json;api-version=3.0-preview' \
   "$AZP_URL/_apis/distributedtask/packages/agent?platform=linux-x64")
 
@@ -63,13 +38,13 @@ curl -LsS $AZP_AGENTPACKAGE_URL | tar -xz & wait $!
   --agent "$(hostname)" \
   --url "$AZP_URL" \
   --auth PAT \
-  --token $(cat "$AZP_TOKEN_FILE") \
+  --token $AZP_TOKEN \
   --pool "$AZP_POOL" \
   --work "$AZP_WORK" \
   --replace \
   --acceptTeeEula & wait $!
 
-rm $AZP_TOKEN_FILE
+unset AZP_TOKEN
 
-cd /azp/agent/bin
+cd bin
 ./Agent.Listener run --once & wait $!
