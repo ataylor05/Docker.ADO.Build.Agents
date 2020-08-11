@@ -1,6 +1,7 @@
 # Info
 These files build the Linux Azure Devops build agent.  
 
+
 ## Manual building
 This project is intended for Azure Devops Pipelines to build the Docker image, however it could be built manually.  If doing a manual build, you would need to replaced the PAT token in the Dockerfile with a valid token to connect to ADO.<br>
 <pre>
@@ -9,6 +10,7 @@ cd Docker.ADO.Build.Agents\Linux
 docker build -t ado-linux-agent:1.0 .
 </pre>
 
+
 ## Docker in Docker
 The Docker process on the Kubernetes hosts are being shared with the agent pods so that the pods are able to use the Docker engine.  This is done via the Kubernetes deloyment manifest by sharing the docker socket.<br>
 <pre>
@@ -16,13 +18,19 @@ docker run -d --restart always -v /var/run/docker.sock:/var/run/docker.sock ado-
 </pre>
 
 
-## Running containers locally
-<pre>
-docker container run -d --restart always ado-linux-agent:1.0
-</pre>
-
 ## Running containers in swarm mode
 This command must be run on a Swarm manager.<br>
 <pre>
 docker stack deploy --compose-file docker-compose.yaml ado-linux-agent
+</pre>
+
+
+## Troubleshooting
+<pre>
+docker inspect CONTAINER-NAME
+
+docker logs CONTAINER-NAME
+
+docker exec -it  CONTAINER-NAME /bin/bash
+docker exec -u 0 -it  CONTAINER-NAME /bin/bash    # root
 </pre>
