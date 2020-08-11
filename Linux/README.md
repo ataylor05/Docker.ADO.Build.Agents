@@ -9,7 +9,7 @@ cd Docker.ADO.Build.Agents\Linux
 docker build -t ado-linux-agent:1.0 .
 </pre>
 
-# Docker in Docker
+## Docker in Docker
 The Docker process on the Kubernetes hosts are being shared with the agent pods so that the pods are able to use the Docker engine.  This is done via the Kubernetes deloyment manifest by sharing the docker socket.<br>
 <pre>
 docker run -d --restart always -v /var/run/docker.sock:/var/run/docker.sock ado-linux-agent:1.0
@@ -19,4 +19,10 @@ docker run -d --restart always -v /var/run/docker.sock:/var/run/docker.sock ado-
 ## Running containers locally
 <pre>
 docker container run -d --restart always ado-linux-agent:1.0
+</pre>
+
+## Running containers in swarm mode
+This command must be run on a Swarm manager.<br>
+<pre>
+docker stack deploy --compose-file docker-compose.yaml ado-linux-agent
 </pre>
