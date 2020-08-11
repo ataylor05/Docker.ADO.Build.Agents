@@ -30,7 +30,7 @@ Installing Docker
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
-Install-Package -Name docker -ProviderName DockerMsftProvider -Force
+Install-Package -Name Docker -ProviderName DockerMsftProvider -Force
 Restart-Computer -Force
 </pre><br><br>
 
