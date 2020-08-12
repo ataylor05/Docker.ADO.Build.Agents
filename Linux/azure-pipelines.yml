@@ -23,7 +23,7 @@ steps:
   displayName: 'Build image'
   inputs:
     script: |
-      docker build -t $(acr-name).azurecr.io/ado-agent-linux:$(image-tag) .
+      docker build -t $(acr-name).azurecr.io/ado-linux-agent:$(image-tag) .
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
 - task: AzureCLI@2
