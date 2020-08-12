@@ -33,5 +33,5 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az acr login -n $(acr-name)
-      docker push $(acr-name).azurecr.io/ado-agent-linux:$(image-tag)
+      docker push $(acr-name).azurecr.io/ado-linux-agent:$(image-tag)
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
