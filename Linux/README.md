@@ -14,7 +14,7 @@ docker build -t ado-linux-agent:1.0 .
 ## Docker in Docker
 The Docker process on the Kubernetes hosts are being shared with the agent pods so that the pods are able to use the Docker engine.  This is done via the Kubernetes deloyment manifest by sharing the docker socket.<br>
 <pre>
-docker run -d --restart always -v /var/run/docker.sock:/var/run/docker.sock ado-linux-agent:1.0
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock ado-linux-agent:1.0
 </pre>
 
 
