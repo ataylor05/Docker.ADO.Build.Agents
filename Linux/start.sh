@@ -5,6 +5,8 @@ if [ -n "$AZP_WORK" ]; then
   mkdir -p "$AZP_WORK"
 fi
 
+AZP_TOKEN_FILE=/azp/.token
+
 mkdir /azp/agent
 cd /azp/agent
 
@@ -18,7 +20,7 @@ export VSO_AGENT_IGNORE=$VSO_AGENT_IGNORE,VSO_AGENT_IGNORE
 
 
 AZP_AGENT_RESPONSE=$(curl -LsS \
-  -u user:$AZP_TOKEN \
+  -u user:$(cat "$AZP_TOKEN_FILE") \
   -H 'Accept:application/json;api-version=3.0-preview' \
   "$AZP_URL/_apis/distributedtask/packages/agent?platform=linux-x64")
 
@@ -38,13 +40,16 @@ curl -LsS $AZP_AGENTPACKAGE_URL | tar -xz & wait $!
   --agent "$(hostname)" \
   --url "$AZP_URL" \
   --auth PAT \
-  --token $AZP_TOKEN \
+  --token $(cat "$AZP_TOKEN_FILE") \
   --pool "$AZP_POOL" \
   --work "$AZP_WORK" \
   --replace \
   --acceptTeeEula & wait $!
 
-unset AZP_TOKEN
-
 cd bin
 ./Agent.Listener run --once & wait $!
+
+cd ..
+./config.sh remove --unattended \
+      --auth PAT \
+      --token $(cat "$AZP_TOKEN_FILE")
