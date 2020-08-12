@@ -1,7 +1,6 @@
 FROM ubuntu:18.04
 
-ENV AZP_URL=https://dev.azure.com/allan05
-ENV AZP_TOKEN_FILE=/azp/token
+ENV AZP_URL=https://dev.azure.com/#{ado-org}#
 ENV AZP_WORK=/azp/_work
 ENV AZP_POOL=aks-linux
 
@@ -202,7 +201,7 @@ RUN rm -rf /tmp/*
 
 WORKDIR /azp
 
-RUN echo "#{ado-pat}#" > /azp/token
+RUN echo "#{ado-pat}#" > /azp/.token
 
 COPY ./start.sh .
 COPY ./exports.sh .
