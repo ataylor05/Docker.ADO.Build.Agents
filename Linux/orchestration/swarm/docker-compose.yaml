@@ -1,8 +1,17 @@
 version: '3.8'
 services:
-  windows:
-    image: ataylorregistry.azurecr.io/ado-windows-agent:1.0
-networks:
-  default:
-    external:
-      name: overlay
+  linux:
+    image: ataylorregistry.azurecr.io/ado-linux-agent:1.1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy: 
+      mode: replicated
+      replicas: 3
+      endpoint_mode: vip
+      placement: 
+        constraints: 
+          - node.role != manager
+          - node.labels.os == linux
+    dns:
+      - 8.8.8.8
+      - 9.9.9.9
