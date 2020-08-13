@@ -18,10 +18,21 @@ docker run -d -v /var/run/docker.sock:/var/run/docker.sock ado-linux-agent:1.0
 </pre>
 
 
-## Running containers in swarm mode
+## Running in swarm mode
 This command must be run on a Swarm manager.<br>
 <pre>
-docker stack deploy --compose-file docker-compose.yaml ado-linux-agent
+docker login REPO_URL
+docker stack deploy --compose-file docker-compose.yaml AdoAgent
+
+docker service ps AdoAgent_linux
+</pre>
+
+
+## Scaling in swarm mode
+This changes the number of service replicas.<br>
+<pre>
+docker service scale AdoAgent=5
+docker service scale AdoAgent_linux=5
 </pre>
 
 
@@ -32,5 +43,4 @@ docker inspect CONTAINER-NAME
 docker logs CONTAINER-NAME
 
 docker exec -it  CONTAINER-NAME /bin/bash
-docker exec -u 0 -it  CONTAINER-NAME /bin/bash    # root
 </pre>
