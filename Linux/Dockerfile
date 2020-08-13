@@ -154,7 +154,7 @@ RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php \
 # Powershell
 RUN apt-get install -y powershell
 
-#Python2
+# Python2
 RUN apt-get install -y python-pip
 
 # Python3
@@ -206,4 +206,6 @@ RUN echo "#{ado-pat}#" > /azp/.token
 COPY ./start.sh .
 COPY ./exports.sh .
 
-CMD ./start.sh
+RUN chmod +x *.sh
+
+CMD ./exports.sh && ./start.sh
