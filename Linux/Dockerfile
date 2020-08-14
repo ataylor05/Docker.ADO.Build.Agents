@@ -203,8 +203,8 @@ WORKDIR /azp
 
 RUN echo "#{ado-pat}#" > /azp/.token
 
-COPY ./start.sh .
-COPY ./exports.sh .
+COPY start.sh /azp
+COPY exports.sh /azp
 
 RUN chmod +x *.sh
 
