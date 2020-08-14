@@ -1,8 +1,11 @@
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-18.04
+pool: aks-linux
+#pool:
+#  vmImage: ubuntu-18.04
+
+variables:
 
 steps:
 - task: AzureKeyVault@1
