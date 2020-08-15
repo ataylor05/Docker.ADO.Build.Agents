@@ -206,6 +206,6 @@ RUN echo "#{ado-pat}#" > /azp/.token
 COPY start.sh /azp
 COPY exports.sh /azp
 
-RUN chmod +x *.sh
+RUN chmod +x *.sh && ./exports.sh
 
 CMD ./start.sh
