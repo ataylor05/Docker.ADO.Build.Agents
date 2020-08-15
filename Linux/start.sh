@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+. ~/.bashrc
+
 if [ -n "$AZP_WORK" ]; then
   mkdir -p "$AZP_WORK"
 fi
