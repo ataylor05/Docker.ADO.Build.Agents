@@ -20,9 +20,9 @@ echo "CurlVersion=$(curl --version | grep "curl" | cut -d " " -f 2)" >> /etc/pro
 echo "export CurlVersion" >> /etc/profile
 
 dockerver=$(docker --version | cut -d " " -f 3)
-echo "export DockerVersion=${dockerver::-1}" >> ~/.bashrc
+echo "export DockerVersion=${dockerver::-1}" >> /root/.bashrc
 
-echo "export DotnetCoreVersion=$(dotnet --version)" >> ~/.bashrc
+echo "export DotnetCoreVersion=$(dotnet --version)" >> /root/.bashrc
 
 echo "export GemVersion=$(gem -v)" >> /etc/bash.bashrc
 
