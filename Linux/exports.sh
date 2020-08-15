@@ -16,14 +16,14 @@ export CloudFoundryCliVersion=$(cf -v | cut -d " " -f 3 | cut -d "+" -f 1)
 
 export ComposerVersion=$(composer --version | cut -d " " -f 3)
 
-echo "export CurlVersion=$(curl --version | grep "curl" | cut -d " " -f 2)" >> /etc/profile
+echo "export CurlVersion=$(curl --version | grep "curl" | cut -d " " -f 2)" >> /etc/bash.bashrc
 
 dockerver=$(docker --version | cut -d " " -f 3)
-echo "export DockerVersion=${dockerver::-1}" >> /etc/profile
+echo "export DockerVersion=${dockerver::-1}" >> /etc/bash.bashrc
 
-echo "export DotnetCoreVersion=$(dotnet --version)" >> /etc/profile
+echo "export DotnetCoreVersion=$(dotnet --version)" >> /etc/bash.bashrc
 
-echo "export GemVersion=$(gem -v)" >> /etc/profile
+echo "export GemVersion=$(gem -v)" >> /etc/bash.bashrc
 
 echo "export GccVersion=$(gcc --version | grep "gcc" | cut -d " " -f 4)" >> ~/.profile
 
