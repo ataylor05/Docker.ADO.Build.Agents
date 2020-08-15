@@ -17,6 +17,7 @@ export CloudFoundryCliVersion=$(cf -v | cut -d " " -f 3 | cut -d "+" -f 1)
 export ComposerVersion=$(composer --version | cut -d " " -f 3)
 
 echo "CurlVersion=$(curl --version | grep "curl" | cut -d " " -f 2)" >> /etc/profile
+echo "export CurlVersion" >> /etc/profile
 
 dockerver=$(docker --version | cut -d " " -f 3)
 echo "export DockerVersion=${dockerver::-1}" >> /etc/bash.bashrc
