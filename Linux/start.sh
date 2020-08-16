@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-. ~/.bashrc
+./exports.sh
 
 if [ -n "$AZP_WORK" ]; then
   mkdir -p "$AZP_WORK"
