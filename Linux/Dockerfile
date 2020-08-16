@@ -207,4 +207,4 @@ COPY exports.sh /azp
 
 RUN chmod +x *.sh && ./exports.sh
 
-CMD ./start.sh
+CMD ["/bin/bash", "./start.sh"]
