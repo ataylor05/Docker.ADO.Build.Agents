@@ -196,8 +196,6 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && apt update \
   && apt-get install -y yarn \
   echo "export YarnVersion=$(yarn --version)" >> ~/.profile
-  
-ENV YarnVersion=$(yarn --version)
 
 RUN rm -rf /tmp/*
 
