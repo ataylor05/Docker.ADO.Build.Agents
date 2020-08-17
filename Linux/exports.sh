@@ -1,29 +1,29 @@
 #!/bin/bash
 
-export AnsibleVersion=$(ansible --version | grep "^ansible" | cut -d " " -f 2)
+echo "export AnsibleVersion=$(ansible --version | grep "^ansible" | cut -d " " -f 2)" >> ~/.profile
 
-export AntVersion=$(ant -version | cut -d " " -f 4)
+echo "export AntVersion=$(ant -version | cut -d " " -f 4)" >> ~/.profile
 
-export AzCopyVersion=$(azcopy --version | cut -d " " -f 3)
+echo "export AzCopyVersion=$(azcopy --version | cut -d " " -f 3)" >> ~/.profile
 
-export AzureCliVersion=$(az version | jq '.["azure-cli"]')
+echo "export AzureCliVersion=$(az version | jq '.["azure-cli"]')" >> ~/.profile
 
-export ClangVersion=$(clang --version | grep "clang version" | cut -d " " -f 3 | cut -d "-" -f 1)
+echo "export ClangVersion=$(clang --version | grep "clang version" | cut -d " " -f 3 | cut -d "-" -f 1)" >> ~/.profile
 
-export CmakeVersion=$(cmake --version | grep "cmake version" | cut -d " " -f 3)
+echo "export CmakeVersion=$(cmake --version | grep "cmake version" | cut -d " " -f 3)" >> ~/.profile
 
-export CloudFoundryCliVersion=$(cf -v | cut -d " " -f 3 | cut -d "+" -f 1)
+echo "export CloudFoundryCliVersion=$(cf -v | cut -d " " -f 3 | cut -d "+" -f 1)" >> ~/.profile
 
-export ComposerVersion=$(composer --version | cut -d " " -f 3)
+echo "export ComposerVersion=$(composer --version | cut -d " " -f 3)" >> ~/.profile
 
-echo "CurlVersion=$(curl --version | grep "curl" | cut -d " " -f 2)" >> /root/.bashrc
+echo "CurlVersion=$(curl --version | grep "curl" | cut -d " " -f 2)" >> ~/.profile
 
 dockerver=$(docker --version | cut -d " " -f 3)
-echo "export DockerVersion=${dockerver::-1}" >> /root/.bashrc
+echo "export DockerVersion=${dockerver::-1}" >> ~/.profile
 
-echo "export DotnetCoreVersion=$(dotnet --version)" >> /root/.bashrc
+echo "export DotnetCoreVersion=$(dotnet --version)" >> ~/.profile
 
-echo "export GemVersion=$(gem -v)" >> /etc/bash.bashrc
+echo "export GemVersion=$(gem -v)" >> ~/.profile
 
 echo "export GccVersion=$(gcc --version | grep "gcc" | cut -d " " -f 4)" >> ~/.profile
 
