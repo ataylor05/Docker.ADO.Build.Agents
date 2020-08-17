@@ -7,7 +7,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV AdoAgentUrl=https://vstsagentpackage.azureedge.net/agent/2.173.0/vsts-agent-linux-x64-2.173.0.tar.gz
 ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
 ENV GoUrl=https://golang.org/dl/go1.14.6.linux-amd64.tar.gz
-ENV Helm2Url=https://get.helm.sh/helm-v2.16.9-linux-arm64.tar.gz
 ENV Helm3Url=https://get.helm.sh/helm-v3.2.4-linux-arm64.tar.gz
 ENV NodeJsUrl=https://deb.nodesource.com/setup_13.x
 ENV PackerUrl=https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_linux_amd64.zip
@@ -107,13 +106,6 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
   && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - \
   && apt-get update -y \
   && apt-get install google-cloud-sdk -y
-
-# Helm 2
-RUN cd /tmp && wget $Helm2Url \
-  && mkdir /opt/helm2 \ 
-  && tar -C /opt/helm2 -zxvf helm-v2* \
-  && ln -s /opt/helm2/linux-amd64/helm /usr/bin/helm2 \
-  && ln -s /opt/helm2/linux-amd64/tiller /usr/bin/tiller
 
 # Helm 3
 RUN cd /tmp && wget $Helm3Url \
