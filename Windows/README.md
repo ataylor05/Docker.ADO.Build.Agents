@@ -61,3 +61,8 @@ netsh interface portproxy add v4tov4 listenport=2375 connectaddress=127.0.0.1 co
 <pre>
 docker container run -d --restart always ado-windows-agent:1.0
 </pre>
+
+## Running services in Swarm mode
+<pre>
+docker stack deploy --compose-file docker-compose.yaml --with-registry-auth AdoAgent
+</pre>
