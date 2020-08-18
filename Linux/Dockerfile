@@ -111,7 +111,8 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
 RUN cd /tmp && wget $Helm3Url \
   && mkdir /opt/helm3 \
   && tar -C /opt/helm3 -zxvf helm-v3* \
-  && ln -s /opt/helm3/linux-amd64/helm /usr/bin/helm
+  && mv /opt/helm3/linux-arm64/helm /usr/bin/helm \
+  && rm -rf /opt/helm3
 
 # Jq
 RUN apt-get install -y jq
@@ -181,6 +182,12 @@ RUN cd /tmp && wget $VaultUrl \
   && unzip vault_*.zip \
   && mv vault /usr/bin \
   && chmod 777 /usr/bin/vault
+  
+# Yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
+  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list \
+  && apt update \
+  && apt install yarn
 
 RUN rm -rf /tmp/*
 
