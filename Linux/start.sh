@@ -5,9 +5,6 @@ if [ -n "$AZP_WORK" ]; then
   mkdir -p "$AZP_WORK"
 fi
 
-mkdir /azp/agent
-cd /azp/agent
-
 export AGENT_ALLOW_RUNASROOT="1"
 
 # Ignore environment variables
