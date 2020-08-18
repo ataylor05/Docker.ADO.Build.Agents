@@ -16,7 +16,7 @@ ENV VaultUrl=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_linux_amd64.
 
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
-RUN apt-get clean && apt-get update \
+RUN apt-get update \
 && apt-get install -y --no-install-recommends \
         apt-transport-https \
         ca-certificates \
