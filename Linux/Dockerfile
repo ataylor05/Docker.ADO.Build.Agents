@@ -60,8 +60,8 @@ RUN cd /tmp \
 
 # Azure Devops Agent
 RUN cd /tmp && wget $AdoAgentUrl \
-  && mkdir /vsts \
-  && tar -C /vsts -zxvf /tmp/vsts-agent-linux-x64-*.tar.gz
+  && mkdir /azp \
+  && tar -C /azp -zxvf /tmp/vsts-agent-linux-x64-*.tar.gz
 
 # Build tools
 RUN apt-get install -y make cmake clang gcc g++
