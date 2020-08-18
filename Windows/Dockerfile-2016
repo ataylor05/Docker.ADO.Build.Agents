@@ -30,22 +30,20 @@ ENV SALESFORCE_CLI_URL=https://developer.salesforce.com/media/salesforce-cli/sfd
 ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_windows_amd64.zip
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
+RUN echo "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" >> $Profile; `
+    echo "$ProgressPreference = 'SilentlyContinue'" >> $Profile
 
 RUN mkdir C:\azp; `
     mkdir C:\bin; `
     mkdir C:\TEMP
 
 # ADO Agent
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile C:\azp\vsts-agent-win.zip; `
+RUN Invoke-WebRequest -Uri $env:ADO_AGENT_URL -OutFile C:\azp\vsts-agent-win.zip; `
     Expand-Archive -Path C:\azp\vsts-agent-win.zip -DestinationPath C:\azp\agent; `
     Remove-Item -Path C:\azp\vsts-agent-win.zip -Force
 
 # Ant
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
+RUN Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
     Expand-Archive -Path C:\TEMP\ant.zip -DestinationPath C:\; `
     cd C:\apache-ant-*; `
     $d = pwd; `
