@@ -1,6 +1,7 @@
 #!/bin/bash
 
-echo "export AnsibleVersion=$(ansible --version | grep "^ansible" | cut -d " " -f 2)" >> ~/.profile
+echo "export ansible=$(whih ansible)" >> ~/.profile
+echo "export ansible.version=$(ansible --version | grep "^ansible" | cut -d " " -f 2)" >> ~/.profile
 
 echo "export AntVersion=$(ant -version | cut -d " " -f 4)" >> ~/.profile
 
