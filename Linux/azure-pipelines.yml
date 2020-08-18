@@ -1,3 +1,9 @@
+parameters:
+- name: ImageTag
+  displayName: Image Tag
+  type: string
+  default: 1.0
+
 trigger: none
 
 pool: aks-linux
@@ -7,6 +13,8 @@ variables:
   value: ataylor-ado-pipelines
 - name: ImageName
   value: ado-linux-agent
+- name: AcrName
+  value: ataylorregistry
 
 steps:
 - task: AzureKeyVault@1
@@ -27,7 +35,7 @@ steps:
   displayName: 'Build image'
   inputs:
     script: |
-      docker build -t $(acr-name).azurecr.io/${{ variables.ImageName }}:$(image-tag) .
+      docker build -t ${{ variables.AcrName }}.azurecr.io/${{ variables.ImageName }}:${{ parameters.ImageTag }} .
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
 - task: AzureCLI@2
@@ -37,6 +45,6 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az acr login -n $(acr-name)
-      docker push $(acr-name).azurecr.io/${{ variables.ImageName }}:$(image-tag)
+      az acr login -n ${{ variables.AcrName }}
+      docker push ${{ variables.AcrName }}.azurecr.io/${{ variables.ImageName }}:${{ parameters.ImageTag }}
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
