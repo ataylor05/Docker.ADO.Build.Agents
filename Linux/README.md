@@ -22,7 +22,7 @@ docker run -d -v /var/run/docker.sock:/var/run/docker.sock ado-linux-agent:1.0
 This command must be run on a Swarm manager.<br>
 <pre>
 docker login REPO_URL
-docker stack deploy --compose-file --with-registry-auth docker-compose.yaml AdoAgent
+docker stack deploy --with-registry-auth --compose-file docker-compose.yaml AdoAgent
 
 docker service ps AdoAgent_linux
 </pre>
