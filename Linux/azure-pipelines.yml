@@ -2,12 +2,18 @@ trigger: none
 
 pool: aks-linux
 
+variables:
+- name: KeyVaultName
+  value: ataylor-ado-pipelines
+- name: ImageName
+  value: ado-linux-agent
+
 steps:
 - task: AzureKeyVault@1
   displayName: 'Get Secrets from KeyVault'
   inputs:
     azureSubscription: 'AKS'
-    KeyVaultName: 'ataylor-ado-pipelines'
+    KeyVaultName: '${{ variables.KeyVaultName }}'
     SecretsFilter: 'ado-pat'
     RunAsPreJob: false
 
@@ -21,7 +27,7 @@ steps:
   displayName: 'Build image'
   inputs:
     script: |
-      docker build -t $(acr-name).azurecr.io/ado-linux-agent:$(image-tag) .
+      docker build -t $(acr-name).azurecr.io/${{ variables.ImageName }}:$(image-tag) .
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
 - task: AzureCLI@2
@@ -32,5 +38,5 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az acr login -n $(acr-name)
-      docker push $(acr-name).azurecr.io/ado-linux-agent:$(image-tag)
+      docker push $(acr-name).azurecr.io/${{ variables.ImageName }}:$(image-tag)
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
