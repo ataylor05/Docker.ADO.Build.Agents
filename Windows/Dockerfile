@@ -4,7 +4,6 @@ FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2016
 ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_WORK=c:\azp\_work
 ENV AZP_POOL=aks-windows
-ENV AZP_TOKEN=#{ado-pat}#
 
 ENV ADO_AGENT_URL=https://vstsagentpackage.azureedge.net/agent/2.172.2/vsts-agent-win-x64-2.172.2.zip
 ENV ANT_URL=http://mirrors.advancedhosters.com/apache//ant/binaries/apache-ant-1.10.8-bin.zip
@@ -30,8 +29,7 @@ ENV SALESFORCE_CLI_URL=https://developer.salesforce.com/media/salesforce-cli/sfd
 ENV TERRAFORM_URL=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_windows_amd64.zip
 ENV VAULT_URL=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_windows_amd64.zip
 
-RUN echo "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" >> $Profile; `
-    echo "$ProgressPreference = 'SilentlyContinue'" >> $Profile
+SHELL ["powershell", "-Command", "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue';"]
 
 RUN mkdir C:\azp; `
     mkdir C:\bin; `
@@ -51,35 +49,25 @@ RUN Invoke-WebRequest -Uri $env:ANT_URL -OutFile C:\TEMP\ant.zip; `
     Rename-Item -Path $d -NewName C:\ant
     
 # AzCopy
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest $env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
+RUN Invoke-WebRequest $env:AZ_COPY_URL -OutFile C:\TEMP\azcopyv10.zip; `
     Expand-Archive -Path C:\TEMP\azcopyv10.zip -DestinationPath C:\TEMP; `
     cd C:\TEMP\azcopy*; `
     cp azcopy.exe c:\bin
 
 # Azure CLI
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile C:\TEMP\AzureCLI.msi; `
+RUN Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile C:\TEMP\AzureCLI.msi; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I C:\TEMP\AzureCLI.msi /quiet'
 
 # Cloud Foundry CLI
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile C:\TEMP\cf_cli.zip; `
+RUN Invoke-WebRequest -Uri $env:CLOUD_FOUNDRY_CLI_URL -OutFile C:\TEMP\cf_cli.zip; `
     Expand-Archive -Path C:\TEMP\cf_cli.zip -DestinationPath C:\bin
 
 # Cmake
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile C:\TEMP\cmake.msi; `
+RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile C:\TEMP\cmake.msi; `
     Start-Process -FilePath C:\TEMP\cmake.msi -Wait
 
 # Curl
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; `
+RUN Invoke-WebRequest -Uri $env:CURL_URL -OutFile C:\TEMP\curl.zip; `
     Expand-Archive -Path C:\TEMP\curl.zip -DestinationPath C:\; `
     cd C:\curl-*; `
     $d = pwd; `
@@ -87,39 +75,28 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Rename-Item -Path $d -NewName C:\curl
 
 # Docker
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    Install-PackageProvider -Name NuGet -Force; `
+RUN Install-PackageProvider -Name NuGet -Force; `
     Install-Module -Name DockerMsftProvider -Repository PSGallery -Force; `
     Install-Package -Name docker -ProviderName DockerMsftProvider -Force
 
 # Dotnet Core
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile C:\TEMP\dotnet-install.ps1; `
+RUN Invoke-WebRequest -Uri https://dot.net/v1/dotnet-install.ps1 -OutFile C:\TEMP\dotnet-install.ps1; `
     C:\TEMP\dotnet-install.ps1 -Channel Current -Runtime dotnet
    
 # GCloud SDK
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
+RUN Invoke-WebRequest -Uri $env:GCLOUD_SDK_URL -OutFile C:\Temp\GoogleCloudSDKInstaller.exe; `
     cmd /c start /wait C:\Temp\GoogleCloudSDKInstaller.exe /S
 
 # Git
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GIT_URL -OutFile C:\TEMP\git.exe; `
+RUN Invoke-WebRequest -Uri $env:GIT_URL -OutFile C:\TEMP\git.exe; `
     Start-Process -FilePath C:\TEMP\git.exe -ArgumentList "/SILENT" -Wait
 
 # Go
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GO_URL -OutFile C:\TEMP\go.msi; `
+RUN Invoke-WebRequest -Uri $env:GO_URL -OutFile C:\TEMP\go.msi; `
     Start-Process -FilePath C:\TEMP\go.msi -ArgumentList "/quiet" -Wait
 
 # Gradle
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile C:\TEMP\gradle.zip; `
+RUN Invoke-WebRequest -Uri $env:GRADLE_URL -OutFile C:\TEMP\gradle.zip; `
     Expand-Archive -Path C:\TEMP\gradle.zip -DestinationPath C:\; `
     cd C:\gradle-*; `
     $d = pwd; `
@@ -127,9 +104,7 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Rename-Item -Path $d -NewName C:\gradle
 
 # Helm 3
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:HELM3_URL -OutFile C:\TEMP\helm3.zip; `
+RUN Invoke-WebRequest -Uri $env:HELM3_URL -OutFile C:\TEMP\helm3.zip; `
     Expand-Archive -Path C:\TEMP\helm3.zip -DestinationPath C:\TEMP; `
     cd C:\TEMP\windows-amd64; `
     mv helm.exe C:\bin
@@ -139,19 +114,13 @@ COPY jdk.ps1 C:\TEMP\jdk.ps1
 RUN C:\TEMP\jdk.ps1
 
 # Jq
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:JQ_URL -OutFile C:\bin\jq.exe
+RUN Invoke-WebRequest -Uri $env:JQ_URL -OutFile C:\bin\jq.exe
 
 # Kubectl
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:KUBECTL_URL -OutFile C:\bin\kubectl.exe
+RUN Invoke-WebRequest -Uri $env:KUBECTL_URL -OutFile C:\bin\kubectl.exe
 
 # Maven
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:MAVEN_URL -OutFile C:\TEMP\maven.zip; `
+RUN Invoke-WebRequest -Uri $env:MAVEN_URL -OutFile C:\TEMP\maven.zip; `
     Expand-Archive -Path C:\TEMP\maven.zip -DestinationPath C:\; `
     cd C:\apache-maven-*; `
     $d = pwd; `
@@ -159,9 +128,7 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Rename-Item -Path $d -NewName C:\maven
  
 # MySQL Shell
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:MYSQL_URL -OutFile C:\TEMP\mysql-shell.zip; `
+RUN Invoke-WebRequest -Uri $env:MYSQL_URL -OutFile C:\TEMP\mysql-shell.zip; `
     Expand-Archive -Path C:\TEMP\mysql-shell.zip -DestinationPath C:\; `
     cd mysql-shell-*; `
     $d = pwd; `
@@ -169,49 +136,35 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
     Rename-Item -Path $d -NewName C:\mysql-shell
 
 # Node Js
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:NODEJS_URL -OutFile C:\TEMP\node.msi; `
+RUN Invoke-WebRequest -Uri $env:NODEJS_URL -OutFile C:\TEMP\node.msi; `
     Start-Process msiexec.exe -Wait -ArgumentList '/I C:\TEMP\node.msi /qn'
 
 # Packer
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:PACKER_URL -OutFile C:\TEMP\packer.zip; `
+RUN Invoke-WebRequest -Uri $env:PACKER_URL -OutFile C:\TEMP\packer.zip; `
     Expand-Archive -Path C:\TEMP\packer.zip -DestinationPath C:\bin
 
 # Python 3
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile C:\TEMP\python3.exe; `
+RUN Invoke-WebRequest -Uri $env:PYTHON3_URL -OutFile C:\TEMP\python3.exe; `
     cmd /c start /wait C:\TEMP\python3.exe /quiet TargetDir=C:\Python36-x64 Include_exe=1 Include_pip=1 Include_lib=1 Include_test=1; `
     C:\Python36-x64\Scripts\pip install requests kubernetes numpy pandas pyyaml
 
 # Ruby
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:RUBY_URL -OutFile C:\TEMP\ruby.exe; `
+RUN Invoke-WebRequest -Uri $env:RUBY_URL -OutFile C:\TEMP\ruby.exe; `
     cmd /c start /wait C:\TEMP\ruby.exe /tasks="assocfiles,modpath" /silent"
 
 # Salesforce CLI
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:SALESFORCE_CLI_URL -OutFile C:\TEMP\sf_cli.exe; `
+RUN Invoke-WebRequest -Uri $env:SALESFORCE_CLI_URL -OutFile C:\TEMP\sf_cli.exe; `
     Start-Process -FilePath C:\Temp\sf_cli.exe -ArgumentList "/S" -Wait
 
 # Telnet
 RUN dism /online /Enable-Feature /FeatureName:TelnetClient
 
 # Terraform
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile C:\TEMP\terraform.zip; `
+RUN Invoke-WebRequest -Uri $env:TERRAFORM_URL -OutFile C:\TEMP\terraform.zip; `
     Expand-Archive -Path C:\TEMP\terraform.zip -DestinationPath c:\bin
 
 # Vault
-RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
-    $ProgressPreference = 'SilentlyContinue'; `
-    Invoke-WebRequest -Uri $env:VAULT_URL -OutFile C:\TEMP\vault.zip; `
+RUN Invoke-WebRequest -Uri $env:VAULT_URL -OutFile C:\TEMP\vault.zip; `
     Expand-Archive -Path C:\TEMP\vault.zip -DestinationPath c:\bin
 
 # Visual Studio 2019 Build Tools
@@ -230,15 +183,7 @@ RUN rmdir /Q /S C:\TEMP
 
 WORKDIR C:\azp
 
-COPY start.ps1 C:\azp\start.ps1
-
-RUN setx /M PATH "C:\bin;C:\ant\bin;C:\gradle\bin;C:\maven\bin;C:\mysql-shell\bin;C:\Program Files\CMake\bin;C:\curl\bin;C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%"
-RUN setx /M ANT_HOME "C:\ant"
-RUN setx /M GRADLE_HOME "C:\gradle"
-RUN setx /M MAVEN_HOME "C:\maven"
-
-ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\azp\start.ps1
-WORKDIR C:\azp
+RUN echo "#{ado-pat}#" > C:\azp\token
 
 COPY start.ps1 C:\azp\start.ps1
 
@@ -247,4 +192,4 @@ RUN setx /M ANT_HOME "C:\ant"
 RUN setx /M GRADLE_HOME "C:\gradle"
 RUN setx /M MAVEN_HOME "C:\maven"
 
-ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass c:\azp\start.ps1
+ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat && powershell.exe -ExecutionPolicy Bypass C:\azp\start.ps1
