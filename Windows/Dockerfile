@@ -183,7 +183,7 @@ RUN rmdir /Q /S C:\TEMP
 
 WORKDIR C:\azp
 
-RUN echo "#{ado-pat}#" > C:\azp\token
+RUN echo #{ado-pat}# > C:\azp\token
 
 COPY start.ps1 C:\azp\start.ps1
 
