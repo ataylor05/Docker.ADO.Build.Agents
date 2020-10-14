@@ -4,7 +4,7 @@ ARG ADO_PAT
 
 ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_WORK=/azp/_work
-ENV AZP_POOL=aks-linux
+ENV AZP_POOL=k8s-linux
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
 ENV GoUrl=https://golang.org/dl/go1.14.6.linux-amd64.tar.gz
@@ -199,6 +199,5 @@ COPY start.sh /azp
 COPY exports.sh /azp
 
 RUN chmod +x start.sh exports.sh
-RUN ./exports.sh
 
-CMD ./start.sh
+CMD ./exports.sh && ./start.sh

@@ -1,6 +1,6 @@
 trigger: master
 
-pool: aks-linux
+pool: k8s-linux
 
 variables:
 - name: KeyVaultName
@@ -17,21 +17,15 @@ steps:
   displayName: 'Get Secrets from KeyVault'
   inputs:
     azureSubscription: 'AKS'
-    KeyVaultName: '${{ variables.KeyVaultName }}'
+    KeyVaultName: '$(KeyVaultName)'
     SecretsFilter: 'ado-pat,acr-username,acr-password'
     RunAsPreJob: false
-
-- task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  displayName: 'Replace tokens in Dockerfile'
-  inputs:
-    rootDirectory: '$(System.DefaultWorkingDirectory)/Linux'
-    targetFiles: '**/Dockerfile'
 
 - task: CmdLine@2
   displayName: 'Build image'
   inputs:
     script: |
-      docker build -t ${{ variables.AcrName }}.azurecr.io/${{ variables.ImageName }}:${{ parameters.ImageTag }} .
+      docker build -t $(AcrName).azurecr.io/$(ImageName):$(ImageTag) .
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
 - task: AzureCLI@2
@@ -41,6 +35,7 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      az acr login -n ${{ variables.AcrName }}
-      docker push ${{ variables.AcrName }}.azurecr.io/${{ variables.ImageName }}:${{ parameters.ImageTag }}
+      docker login $(AcrName).azurecr.io --username $(acr-username) --password $(acr-password)
+      docker push $(AcrName).azurecr.io/$(ImageName):$(ImageTag)
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
+
