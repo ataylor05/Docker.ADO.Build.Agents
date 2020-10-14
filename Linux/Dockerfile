@@ -188,7 +188,8 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
   && apt update \
   && apt install yarn
 
-RUN rm -rf /tmp/*
+RUN rm -rf /tmp/* \
+   && mkdir /azp
 
 WORKDIR /azp
 
