@@ -192,7 +192,7 @@ RUN rm -rf /tmp/*
 
 WORKDIR /azp
 
-RUN echo $ADO_PAT > /azp/.token
+RUN echo "$ADO_PAT" > /azp/.token
 
 COPY start.sh /azp
 COPY exports.sh /azp
