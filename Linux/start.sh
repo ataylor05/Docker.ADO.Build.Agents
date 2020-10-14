@@ -7,6 +7,8 @@ fi
 
 export AGENT_ALLOW_RUNASROOT="1"
 
+cat /azp/.token
+
 AZP_TOKEN=$(cat /azp/.token)
 rm -f /azp/.token
 
