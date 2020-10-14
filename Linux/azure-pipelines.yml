@@ -1,10 +1,4 @@
-parameters:
-- name: ImageTag
-  displayName: Image Tag
-  type: string
-  default: 1.0
-
-trigger: none
+trigger: master
 
 pool: aks-linux
 
@@ -13,6 +7,8 @@ variables:
   value: ataylor-ado-pipelines
 - name: ImageName
   value: ado-linux-agent
+- name: ImageTag
+  value: "1.0"
 - name: AcrName
   value: ataylorregistry
 
@@ -22,7 +18,7 @@ steps:
   inputs:
     azureSubscription: 'AKS'
     KeyVaultName: '${{ variables.KeyVaultName }}'
-    SecretsFilter: 'ado-pat'
+    SecretsFilter: 'ado-pat,acr-username,acr-password'
     RunAsPreJob: false
 
 - task: qetza.replacetokens.replacetokens-task.replacetokens@3

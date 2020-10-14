@@ -6,7 +6,6 @@ ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_WORK=/azp/_work
 ENV AZP_POOL=aks-linux
 ENV DEBIAN_FRONTEND=noninteractive
-ENV AdoAgentUrl=https://vstsagentpackage.azureedge.net/agent/2.173.0/vsts-agent-linux-x64-2.173.0.tar.gz
 ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
 ENV GoUrl=https://golang.org/dl/go1.14.6.linux-amd64.tar.gz
 ENV Helm3Url=https://get.helm.sh/helm-v3.2.4-linux-arm64.tar.gz
@@ -59,11 +58,6 @@ ADD https://aka.ms/InstallAzureCLIDeb /tmp/deb_install.sh
 RUN cd /tmp \
   && chmod +x deb_install.sh \
   && ./deb_install.sh
-
-# Azure Devops Agent
-RUN cd /tmp && wget $AdoAgentUrl \
-  && mkdir /azp \
-  && tar -C /azp -zxvf /tmp/vsts-agent-linux-x64-*.tar.gz
 
 # Build tools
 RUN apt-get install -y make cmake clang gcc g++
@@ -198,7 +192,7 @@ RUN rm -rf /tmp/*
 
 WORKDIR /azp
 
-RUN echo "$ADO_PAT" > /azp/.token
+RUN echo $ADO_PAT > /azp/.token
 
 COPY start.sh /azp
 COPY exports.sh /azp
