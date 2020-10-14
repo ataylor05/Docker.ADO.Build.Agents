@@ -1,5 +1,7 @@
 FROM ubuntu:18.04
 
+ARG ADO_PAT
+
 ENV AZP_URL=https://dev.azure.com/allan05
 ENV AZP_WORK=/azp/_work
 ENV AZP_POOL=aks-linux
@@ -114,6 +116,9 @@ RUN cd /tmp && wget $Helm3Url \
   && mv /opt/helm3/linux-arm64/helm /usr/bin/helm \
   && rm -rf /opt/helm3
 
+# Java
+RUN apt-get install -y openjdk-11-jdk
+
 # Jq
 RUN apt-get install -y jq
 
@@ -193,7 +198,7 @@ RUN rm -rf /tmp/*
 
 WORKDIR /azp
 
-RUN echo "#{ado-pat}#" > /azp/.token
+RUN echo "$ADO_PAT" > /azp/.token
 
 COPY start.sh /azp
 COPY exports.sh /azp
@@ -201,4 +206,4 @@ COPY exports.sh /azp
 RUN chmod +x start.sh exports.sh
 RUN ./exports.sh
 
-CMD . ~/.profile && ./start.sh
+CMD ./start.sh
