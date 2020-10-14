@@ -7,9 +7,7 @@ fi
 
 export AGENT_ALLOW_RUNASROOT="1"
 
-cat /azp/.token
-
-AZP_TOKEN=${cat /azp/.token}
+AZP_TOKEN=$(cat /azp/.token)
 rm -f /azp/.token
 
 # Ignore environment variables
@@ -18,7 +16,7 @@ export VSO_AGENT_IGNORE=$VSO_AGENT_IGNORE,KUBERNETES_PORT,KUBERNETES_PORT_443_TC
 export VSO_AGENT_IGNORE=$VSO_AGENT_IGNORE,AdoAgentUrl,DotNetCoreUrl,GoUrl,Helm3Url,NodeJsUrl,PackerUrl,SalesForceCliUrl,TerraformUrl,VaultUrl,DEBIAN_FRONTEND,HOME,HOSTNAME,OLDPWD,PATH,PWD,sh,_
 export VSO_AGENT_IGNORE=$VSO_AGENT_IGNORE,VSO_AGENT_IGNORE
 
-AZP_AGENT_RESPONSE=$(curl -LsS -u user:$(cat "$AZP_TOKEN_FILE") -H 'Accept:application/json;api-version=3.0-preview' "$AZP_URL/_apis/distributedtask/packages/agent?platform=linux-x64")
+AZP_AGENT_RESPONSE=$(curl -LsS -u user:$AZP_TOKEN -H 'Accept:application/json;api-version=3.0-preview' "$AZP_URL/_apis/distributedtask/packages/agent?platform=linux-x64")
 if echo "$AZP_AGENT_RESPONSE" | jq . >/dev/null 2>&1; then
   AZP_AGENTPACKAGE_URL=$(echo "$AZP_AGENT_RESPONSE" | jq -r '.value | map([.version.major,.version.minor,.version.patch,.downloadUrl]) | sort | .[length-1] | .[3]')
 fi
