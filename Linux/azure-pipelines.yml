@@ -1,6 +1,6 @@
 trigger: master
 
-pool: k8s-linux
+pool: aks-linux
 
 variables:
 - name: KeyVaultName
