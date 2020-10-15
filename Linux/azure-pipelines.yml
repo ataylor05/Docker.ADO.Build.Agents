@@ -38,7 +38,7 @@ steps:
     inlineScript: |
       docker login $(AcrName).azurecr.io --username $(acr-username) --password $(acr-password)
       docker push $(AcrName).azurecr.io/$(ImageName):$(ImageTag)
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
+    workingDirectory: '
 
 - task: CmdLine@2
   displayName: 'Get yq'
@@ -49,14 +49,13 @@ steps:
       chmod 777 /usr/bin/yq
       
 - task: CmdLine@2
-  displayName: 'Create pipeline artifact'
   inputs:
     script: |
       yq w kubernetes-deployment.yaml \
          spec.template.spec.containers[0].image \
          $(AcrName).azurecr.io/$(ImageName):$(ImageTag) > $(Pipeline.Workspace)/deployment.yaml
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux/orchestration/k8s'
    
-
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
