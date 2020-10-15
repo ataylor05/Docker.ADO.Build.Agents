@@ -49,9 +49,16 @@ steps:
       chmod 777 /usr/bin/yq
       
 - task: CmdLine@2
-  displayName: 'Create pipeline artifacts'
+  displayName: 'Create pipeline artifact'
   inputs:
     script: |
       yq w kubernetes-deployment.yaml \
          spec.template.spec.containers[0].image \
          $(AcrName).azurecr.io/$(ImageName):$(ImageTag) > $(Pipeline.Workspace)/deployment.yaml
+   
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'release_config'
+    publishLocation: 'pipeline'
