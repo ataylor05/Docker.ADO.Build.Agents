@@ -25,6 +25,8 @@ spec:
         volumeMounts:
           - name: dockersock
             mountPath: "/var/run/docker.sock"
+      imagePullSecrets:
+      - name: atayloracr
       nodeSelector:
           "beta.kubernetes.io/os": linux
       volumes:
