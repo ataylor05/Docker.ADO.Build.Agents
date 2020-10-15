@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ado-linux-agent
 spec:
-  replicas: #{deployment-replicas}#
+  replicas: 1
   selector:
     matchLabels:
       app: ado-linux-agent
@@ -15,8 +15,8 @@ spec:
         app: ado-linux-agent
     spec:
       containers:
-      - name: #{deployment-name}#
-        image: ataylorregistry.azurecr.io/ado-linux-agent:#{agent-tag}#
+      - name: ado-linux-agent
+        image: ataylorregistry.azurecr.io/ado-linux-agent:0.0
         ports:
         - containerPort: 443
         imagePullPolicy: Always
