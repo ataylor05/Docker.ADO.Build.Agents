@@ -40,3 +40,18 @@ steps:
       docker push $(AcrName).azurecr.io/$(ImageName):$(ImageTag)
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
+- task: CmdLine@2
+  displayName: 'Get yq'
+  inputs:
+    script: |
+      wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64
+      mv yq_linux_amd64 /usr/bin/yq
+      chmod 777 /usr/bin/yq
+      
+- task: CmdLine@2
+  displayName: 'Create pipeline artifacts'
+  inputs:
+    script: |
+      yq w kubernetes-deployment.yaml \
+         spec.template.spec.containers[0].image \
+         $(AcrName).azurecr.io/$(ImageName):$(ImageTag) > $(Pipeline.Workspace)/deployment.yaml
