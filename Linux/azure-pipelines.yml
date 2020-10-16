@@ -27,7 +27,7 @@ steps:
   displayName: 'Build image'
   inputs:
     script: |
-      docker build -t $(AcrName).azurecr.io/$(ImageName):$(ImageTag) .
+      docker build -t $(AcrName).azurecr.io/$(ImageName):$(ImageTag) --build-arg ADO_PAT=$(ado-pat) .
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
 
 - task: AzureCLI@2
