@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "nameserver 192.168.4.2" >> /etc/resolv.conf
+
 if [ -n "$AZP_WORK" ]; then
   mkdir -p "$AZP_WORK"
 fi
