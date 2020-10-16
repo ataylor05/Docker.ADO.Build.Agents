@@ -52,7 +52,7 @@ steps:
   displayName: 'Create release artifact'
   inputs:
     script: |
-      yq w kubernetes-deployment.yaml \
+      yq w deployment.yaml \
          spec.template.spec.containers[0].image \
          $(AcrName).azurecr.io/$(ImageName):$(ImageTag) > $(Pipeline.Workspace)/deployment.yaml
     workingDirectory: '$(System.DefaultWorkingDirectory)/Linux/orchestration/k8s'
