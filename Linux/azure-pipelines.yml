@@ -41,7 +41,6 @@ steps:
     workingDirectory: '
 
 - task: CmdLine@2
-  displayName: 'Get yq'
   inputs:
     script: |
       wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64
