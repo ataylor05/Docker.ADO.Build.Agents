@@ -39,10 +39,7 @@ curl -LsS $AZP_AGENTPACKAGE_URL | tar -xz & wait $!
   --replace \
   --acceptTeeEula & wait $!
 
+unset AZP_TOKEN
+
 cd bin
 ./Agent.Listener run --once & wait $!
-
-cd ..
-./config.sh remove --unattended \
-      --auth PAT \
-      --token $AZP_TOKEN
