@@ -1,10 +1,10 @@
 trigger: 
   - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+#pool:
+#  vmImage: 'ubuntu-latest'
   
-#pool: k8s-linux
+pool: k8s-linux
 
 variables:
 - name: KeyVaultName
