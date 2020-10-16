@@ -45,8 +45,8 @@ steps:
   inputs:
     script: |
       wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64
-      mv yq_linux_amd64 /usr/bin/yq
-      chmod 777 /usr/bin/yq
+      sudo mv yq_linux_amd64 /usr/bin/yq
+      sudo chmod 777 /usr/bin/yq
       
 - task: CmdLine@2
   displayName: 'Create release artifact'
