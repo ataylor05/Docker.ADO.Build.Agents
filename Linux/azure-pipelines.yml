@@ -38,9 +38,9 @@ steps:
     inlineScript: |
       docker login $(AcrName).azurecr.io --username $(acr-username) --password $(acr-password)
       docker push $(AcrName).azurecr.io/$(ImageName):$(ImageTag)
-    workingDirectory: '
 
 - task: CmdLine@2
+  displayName: 'Get yq'
   inputs:
     script: |
       wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64
@@ -48,6 +48,7 @@ steps:
       chmod 777 /usr/bin/yq
       
 - task: CmdLine@2
+  displayName: 'Create release artifact'
   inputs:
     script: |
       yq w kubernetes-deployment.yaml \
