@@ -1,7 +1,8 @@
 trigger: 
   - master
 
-pool: k8s-linux
+pool:
+  vmImage: 'ubuntu-latest'
 
 variables:
 - name: KeyVaultName
