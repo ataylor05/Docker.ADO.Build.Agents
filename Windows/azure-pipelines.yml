@@ -1,7 +1,10 @@
 trigger:
 - master
 
-pool: aks-windows
+#pool: aks-windows
+
+pool:
+  vmImage: 'windows-latest'
 
 steps:
 - task: AzureKeyVault@1
