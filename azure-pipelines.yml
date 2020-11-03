@@ -30,7 +30,7 @@ steps:
   inputs:
     script: |
       docker build -t $(AcrName).azurecr.io/$(ImageName):$(ImageTag) --build-arg ADO_PAT=$(ado-pat) .
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: AzureCLI@2
   displayName: 'Push image to Azure Container Registry'
@@ -49,6 +49,7 @@ steps:
       wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64
       sudo mv yq_linux_amd64 /usr/bin/yq
       sudo chmod 777 /usr/bin/yq
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
       
 - task: CmdLine@2
   displayName: 'Create release artifact'
@@ -57,7 +58,7 @@ steps:
       yq w deployment.yaml \
          spec.template.spec.containers[0].image \
          $(AcrName).azurecr.io/$(ImageName):$(ImageTag) > $(Pipeline.Workspace)/deployment.yaml
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Linux/orchestration/k8s'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
    
 - task: PublishPipelineArtifact@1
   inputs:
