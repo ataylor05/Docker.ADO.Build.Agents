@@ -57,7 +57,7 @@ steps:
     script: |
       yq w deployment.yaml \
          spec.template.spec.containers[0].image \
-         $(AcrName).azurecr.io/$(ImageName):$(ImageTag) > $(Pipeline.Workspace)/deployment.yaml
+         $(AcrName).azurecr.io/$(ImageName):$(ImageTag) > $(Pipeline.Workspace)/k8s-deployment.yaml
     workingDirectory: '$(System.DefaultWorkingDirectory)'
    
 - task: PublishPipelineArtifact@1
