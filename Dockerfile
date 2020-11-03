@@ -7,13 +7,13 @@ ENV AZP_WORK=/azp/_work
 ENV AZP_POOL=k8s-linux
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DotNetCoreUrl=https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
-ENV GoUrl=https://golang.org/dl/go1.14.6.linux-amd64.tar.gz
-ENV Helm3Url=https://get.helm.sh/helm-v3.2.4-linux-arm64.tar.gz
-ENV NodeJsUrl=https://deb.nodesource.com/setup_13.x
-ENV PackerUrl=https://releases.hashicorp.com/packer/1.6.1/packer_1.6.1_linux_amd64.zip
+ENV GoUrl=https://golang.org/dl/go1.15.3.linux-amd64.tar.gz
+ENV Helm3Url=https://get.helm.sh/helm-v3.4.0-linux-arm64.tar.gz
+ENV NodeJsUrl=https://deb.nodesource.com/setup_15.x
+ENV PackerUrl=https://releases.hashicorp.com/packer/1.6.5/packer_1.6.5_linux_amd64.zip
 ENV SalesForceCliUrl=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-ENV TerraformUrl=https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip
-ENV VaultUrl=https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_linux_amd64.zip
+ENV TerraformUrl=https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip
+ENV VaultUrl=https://releases.hashicorp.com/vault/1.5.5/vault_1.5.5_linux_amd64.zip
 
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
@@ -197,6 +197,6 @@ RUN echo ${ADO_PAT} > /azp/.token
 
 COPY start.sh /azp
 
-RUN chmod +x start.sh exports.sh
+RUN chmod +x start.sh
 
 CMD ./start.sh
