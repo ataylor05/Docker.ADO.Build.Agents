@@ -196,8 +196,7 @@ WORKDIR /azp
 RUN echo ${ADO_PAT} > /azp/.token
 
 COPY start.sh /azp
-COPY exports.sh /azp
 
 RUN chmod +x start.sh exports.sh
 
-CMD ./exports.sh && ./start.sh
+CMD ./start.sh
