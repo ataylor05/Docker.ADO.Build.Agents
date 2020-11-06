@@ -32,6 +32,7 @@ RUN apt-get update \
         libunwind8 \
         lsb-release \
         netcat \
+        nfs-common \
         software-properties-common \
         sudo \
         tar \
